@@ -1,0 +1,25 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="$(SolutionDir)ReCode\\bin\\Release\\ReCode.dll" #>
+<#@ import namespace="ReCode" #>
+<#@ output extension=".cs" #>
+using System.Collections.Generic;
+
+namespace ReCodeTest {
+	public class TestParser2 {
+		public static unsafe KeyValuePair<ushort, int>? Parse(char * start, int len){
+            var pNext = start;
+            var pLimit = start + len;
+            var pEnd = start; 
+<#
+foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+    for(var i=0;i<10;i++)
+      if(token.Matches($"'{25*i}'"))                        { #> return new KeyValuePair<ushort,int>(<#=i#>, (int)(pEnd - start)); <#}
+    if(token.Matches(@"[+\-]?[0-9]*[\.][0-9]+[E][+\-]?[0-9]+")) { #> return new KeyValuePair<ushort,int>(10, (int)(pEnd - start)); <# }
+    if(token.Matches(@"[+\-]?[0-9]*[\.][0-9]+"))              { #> return new KeyValuePair<ushort,int>(11, (int)(pEnd - start)); <# }
+    if(token.Matches(@"[+\-]?[0-9]+"))                      { #> return new KeyValuePair<ushort,int>(12, (int)(pEnd - start)); <# }
+    if(token.Fails)                                         { #> return null; <# }
+}
+#>
+        }
+    }
+}

@@ -1,0 +1,143 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="$(SolutionDir)ReCode\\bin\\Debug\\ReCode.dll" #>
+<#@ include file="TestRe3Entitites.ttinclude" #>
+<#@ import namespace="ReCode" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+namespace ReCodeTest {
+	public class TestParser3 {
+		public static unsafe int Parse(char * start, int len){
+            var pNext = start;
+            var pLimit = start + len;
+            var pEnd = start; 
+	    textMode:
+<#
+    foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+        token.Define("digit", "[0-9]");
+        token.Define("digitHex", "[0-9a-fA-F]");
+        token.Define("ws", "[ \\n\\r\\t]");
+        token.Define("letter", "[a-zA-Z]");
+        token.Define("tokenChar", "[a-zA-Z0-9:-]");
+        token.Define("letterCode", "\"&#\" digit+ \";\"");
+        token.Define("letterCodeHex", "\"&#x\" digitHex+ \";\"");
+        token.Define("beginTagPart", "\"<\" letter tokenChar*");
+        token.Define("endTagPart",  "\"</\" letter tokenChar*");
+        if(token.Matches(@"'<--'"))                    { #> goto inCommentMode; <#        } 
+        if(token.Matches(@"'<?'"))                     { #> goto inSkipTag; <#        }
+        if(token.Matches(@"""<![CDATA["""))            { #> goto inCDataMode; <#        }
+        if(token.Matches(@"'<!'"))                     { #> goto inSkipTag; <#        }
+        if(token.Matches(@"'<script'"))                { #> goto inScriptMode; <#        }
+        if(token.Matches(@"endTagPart"))               { #> goto inEndTagMode; <#        }
+        if(token.Matches(@"beginTagPart"))             { #> goto inBeginTagMode; <#        }
+        if(token.Matches(@"letterCode"))               { #> goto textMode; <#        }
+        if(token.Matches(@"letterCodeHex"))            { #> goto textMode; <#        }
+        if(token.Matches(@"""&quot;""")) 	           { #> goto textMode; <#        }
+        if(token.Matches(@"""&amp;""")) 	           { #> goto textMode; <#        }
+        if(token.Matches(@"""&lt;""")) 	               { #> goto textMode; <#        }
+        if(token.Matches(@"""&gt;""")) 	               { #> goto textMode; <#        }
+        foreach(var pair in GetHtmlEntities())
+            if(token.Matches($"\"{pair.Key}\"")) 	   { #> goto textMode; <#            }	
+        if(token.Matches(@"[.]")) 	                   { #> goto textMode; <#        }
+        if(token.Fails)                                { #> return 0; <#        }
+    }
+#>
+        inBeginTagMode:
+<#
+    foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+        token.Define("letter", "[a-zA-Z]");
+        token.Define("tokenChar", "[a-zA-Z0-9:-]");
+        if(token.Matches(@"letter tokenChar*"))        { #> goto inBeginTagAttributeMode; <#        }
+        if(token.Matches(@"'>'"))                      { #> goto textMode; <#        }
+        if(token.Matches(@"'/>'"))                     { #> goto textMode; <#        }
+        if(token.Fails)                                { #> return 0; <#        }
+    }
+#>
+        inBeginTagAttributeMode:
+<#
+    foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+        token.Define("ws", "[ \\n\\r\\t]");
+        token.Define("letter", "[a-zA-Z]");
+        token.Define("tokenChar", "[a-zA-Z0-9:-]");
+        if(token.Matches(@"ws"))                       { #> goto inBeginTagAttributeMode; <#        }
+        if(token.Matches(@"letter tokenChar*"))        { #> goto inBeginTagAttributeMode; <#        }
+        if(token.Matches(@"'='"))                      { #> goto inBeginTagAttributeValueMode; <#        }
+        if(token.Matches(@"'>'"))                      { #> goto textMode; <#        }
+        if(token.Matches(@"'/>'"))                     { #> goto textMode; <#        }
+        if(token.Fails)                                { #> return 0; <#        }
+    }
+#>
+        inBeginTagAttributeValueMode:
+<#
+    foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+        token.Define("ws", "[ \\n\\r\\t]");
+        token.Define("singleQuote", "[']");
+        token.Define("doubleQuote", "[\"]");
+        token.Define("notSingleQuote", "[.] \\ singleQuote");
+        token.Define("notDoubleQuote", "[.] \\ doubleQuote");
+        token.Define("inlineValueChar", "[.] \\ [>=/'\" \\n\\n\\t]");
+        if(token.Matches(@"ws"))                       { #> goto inBeginTagAttributeValueMode; <#        }
+        if(token.Matches(@"'>'"))                      { #> goto textMode; <#        }
+        if(token.Matches(@"'/>'"))                     { #> goto textMode; <#        }
+        if(token.Matches(@"singleQuote notSingleQuote* singleQuote")) { #> goto inBeginTagMode; <#        }
+        if(token.Matches(@"doubleQuote notDoubleQuote* doubleQuote")) { #> goto inBeginTagMode; <#        }
+        if(token.Matches(@"inlineValueChar+"))         { #> goto inBeginTagMode; <#        }
+        if(token.Fails)                                { #> return 0; <#        }
+    }
+#>
+        inEndTagMode:
+<#
+    foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+        if(token.Matches(@"[>]"))                      { #> goto textMode; <#        }
+        if(token.Matches(@"([.] \ [>])+"))             { #> goto inEndTagMode; <#        }
+        if(token.Fails)                                { #> return 0; <#        }
+    }
+#>
+        inScriptMode:
+<#
+    foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+        if(token.Matches(@"'>'"))                      { #> goto inScriptBodyMode; <#        }
+        if(token.Matches(@"'/>'"))                     { #> goto textMode; <#        }
+        if(token.Matches(@"[.]"))                      { #> goto inScriptMode; <#        }
+        if(token.Fails)                                { #> return 0; <#        }
+    }
+#>
+        inScriptBodyMode:
+<#
+    foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+        token.Define("ws", "[ \\n\\r\\t]");
+        if(token.Matches(@"'</' ws* 'script' ws* '>'")){ #> goto textMode; <#        }
+        if(token.Matches(@"[.]"))                      { #> goto inScriptBodyMode; <#        }
+        if(token.Fails)                                { #> return 0; <#        }
+    }
+#>
+        inCDataMode:
+<#
+    foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+        if(token.Matches(@"[\]\]>]"))                  { #> goto textMode; <#        }
+        if(token.Matches(@"([.] \ [\]])+"))            { #> goto inCDataMode; <#        }
+        if(token.Matches(@"[.]"))                      { #> goto inCDataMode; <#        }
+        if(token.Fails)                                { #> return 0; <#        }
+    }
+#>
+        inSkipTag:
+<#
+    foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+        if(token.Matches(@"[>]"))                      { #> goto textMode; <#        }
+        if(token.Matches(@"([.] \ [>])+"))             { #> goto inCommentMode; <#        }
+        if(token.Fails)                                { #> return 0; <#        }
+    }
+#>
+        inCommentMode:
+<#
+    foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+        if(token.Matches(@"'-->'"))                    { #> goto textMode; <#        }
+        if(token.Matches(@"([.] \ [-])+"))             { #> goto inCommentMode; <#        }
+        if(token.Matches(@"[.]"))                      { #> goto inCommentMode; <#        }
+        if(token.Fails)                                { #> return 0; <#        }
+    }
+#>
+        }
+    }
+}

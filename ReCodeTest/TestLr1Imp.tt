@@ -1,0 +1,29 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="$(SolutionDir)ReCode\\bin\\Release\\ReCode.dll" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="ReCode" #>
+using System;
+using System.Collections.Generic;
+
+namespace ReCodeTest {
+    public partial class TestLr1 {
+        <#
+    foreach (var language in ReCode.ParserTokens(WriteLine, "Node"))
+    {
+        var g = language.GrammarFromTokens("Item", "List", "MemberList", "Property", "BrBegin", "BrEnd", "CbBegin", "CbEnd", "Comma", "Equal", "Letters");
+        if(g.Matches("Item",        "Letters"))                         {#> res = arg0; <# }
+        if(g.Matches("Item",        "BrBegin", "List", "BrEnd"))        {#> res = arg1; <# }
+        if(g.Matches("Item",        "CbBegin", "CbEnd"))                {#> res = new NodeObject(); <# }
+        if(g.Matches("Item",        "CbBegin", "MemberList", "CbEnd"))  {#> res = arg1; <# }
+        if(g.Matches("List",        "Item"))                            {#> res = new NodeArray(arg0); <# }
+        if(g.Matches("List",        "List", "Comma", "Item"))           {#> res = (arg0 as NodeArray).Add(arg2); <# }
+        if(g.Matches("MemberList",  "Property"))                        {#> res = arg0; <# }
+        if(g.Matches("MemberList",  "MemberList", "Property"))          {#> res = (arg0 as NodeObject).AddRange((arg1 as NodeObject).Properties); <# }
+        if(g.Matches("Property",    "Letters", "Equal", "Item"))        {#> res = new NodeObject(arg0 as NodeString, arg2); <# }
+    }
+        #>
+    }
+}

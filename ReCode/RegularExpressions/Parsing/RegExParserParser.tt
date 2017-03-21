@@ -1,0 +1,32 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="$(SolutionDir)ReCode\\bin\\Release\\ReCode.dll" #>
+<#@ import namespace="ReCode" #>
+<#@ output extension=".cs" #>
+using System;
+using System.Collections.Generic;
+using ReCode.RegularExpressions.Parsing.Nodes;
+
+namespace ReCode.RegularExpressions.Parsing {
+    public partial class RegExParser {
+        <#
+    foreach (var language in ReCode.ParserTokens(WriteLine, "RegExNode"))
+    {
+        var g = language.GrammarFromTokens("Expr", "Phrase", "Range", "Star", "Plus", "Question", "ParBegin", "ParEnd", "Bar", "Accept", "Name", "Except");
+        var g1 = g.WithPrecedenceGroup();
+        if(g1.Matches("Expr", "ParBegin", "Expr", "ParEnd")) {#> res = arg1; <# }
+        if(g1.Matches("Expr", "Phrase"))                     {#> res = arg0; <# }
+        if(g1.Matches("Expr", "Range"))                      {#> res = arg0; <# }
+        if(g1.Matches("Expr", "Name"))                       {#> res = _namedExpressions[(arg0 as RegExNodeName).Name]; <# }
+        if(g1.MatchesLeft("Expr", "Expr", "Expr"))           {#> res = new RegExNodeConcat(arg0,arg1); <# }
+        if(g1.MatchesLeft("Expr", "Expr", "Bar", "Expr"))    {#> res = RegExNodeUnion.Of(arg0,arg2); <# }
+        var g2 = g.WithPrecedenceGroup();
+        if(g2.Matches("Expr", "Expr", "Accept"))             {#> res = new RegExNodeAccept(arg0, (arg1 as RegExNodeAccept).AcceptState); <# }
+        if(g2.Matches("Expr", "Expr", "Plus"))               {#> res = new RegExNodeRepeat(arg0, RegExRepeatType.OneOrMore); <# }
+        if(g2.Matches("Expr", "Expr", "Star"))               {#> res = new RegExNodeRepeat(arg0, RegExRepeatType.ZeroOrMore);<# }
+        if(g2.Matches("Expr", "Expr", "Question"))           {#> res = new RegExNodeRepeat(arg0, RegExRepeatType.ZeroOrOne); <# }
+        var g3 = g.WithPrecedenceGroup();
+        if(g3.MatchesRight("Expr", "Expr", "Except", "Expr")) {#> res = RegExNodeRanges.Except(arg0, arg2); <# }
+    }
+        #>
+    }
+}

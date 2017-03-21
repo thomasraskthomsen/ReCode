@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8B925EAA-5FD2-4978-B45D-8D5D47E036A9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ReCode</RootNamespace>
+    <AssemblyName>ReCode</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Parsers\CodeGeneration\CodeGenerator.cs" />
+    <Compile Include="Parsers\Generation\Data\ActionSet.cs" />
+    <Compile Include="Parsers\Generation\Data\LrAction.cs" />
+    <Compile Include="Parsers\Generation\Data\LrItem.cs" />
+    <Compile Include="Parsers\Generation\Data\LrItemCollection.cs" />
+    <Compile Include="Parsers\Generation\Data\LrState.cs" />
+    <Compile Include="Parsers\Generation\Data\LrStateCollection.cs" />
+    <Compile Include="Parsers\Generation\LrActionType.cs" />
+    <Compile Include="Parsers\Generation\LrDerivation.cs" />
+    <Compile Include="Parsers\Generation\ParserGenerator.cs" />
+    <Compile Include="Parsers\Generation\ParserTableEntry.cs" />
+    <Compile Include="Parsers\Grammatics\Grammar.cs" />
+    <Compile Include="Parsers\Grammatics\IGrammar.cs" />
+    <Compile Include="Parsers\Grammatics\Production.cs" />
+    <Compile Include="Parsers\RunTime\RunTimeParser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReCode.cs" />
+    <Compile Include="RegularExpressions\Code\ReCodeGenerator.cs" />
+    <Compile Include="RegularExpressions\Evaluation\RegExEvaluationNode.cs" />
+    <Compile Include="RegularExpressions\Evaluation\RegExEvaluator.cs" />
+    <Compile Include="RegularExpressions\Parsing\Nodes\RegExCasing.cs" />
+    <Compile Include="RegularExpressions\Parsing\Nodes\RegExNode.cs" />
+    <Compile Include="RegularExpressions\Parsing\Nodes\RegExNodeAccept.cs" />
+    <Compile Include="RegularExpressions\Parsing\Nodes\RegExNodeBlank.cs" />
+    <Compile Include="RegularExpressions\Parsing\Nodes\RegExNodeConcat.cs" />
+    <Compile Include="RegularExpressions\Parsing\Nodes\RegExNodeExcept.cs" />
+    <Compile Include="RegularExpressions\Parsing\Nodes\RegExNodeName.cs" />
+    <Compile Include="RegularExpressions\Parsing\Nodes\RegExNodeRanges.cs" />
+    <Compile Include="RegularExpressions\Parsing\Nodes\RegExNodeRepeat.cs" />
+    <Compile Include="RegularExpressions\Parsing\Nodes\RegExNodeSequence.cs" />
+    <Compile Include="RegularExpressions\Parsing\Nodes\RegExNodeUnion.cs" />
+    <Compile Include="RegularExpressions\Parsing\Nodes\RegExType.cs" />
+    <Compile Include="RegularExpressions\Parsing\Nodes\RexExInputRange.cs" />
+    <Compile Include="RegularExpressions\Parsing\RegExParser.cs" />
+    <Compile Include="RegularExpressions\Parsing\RegExParserParser.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RegExParserParser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RegularExpressions\Parsing\RegExParserScanner.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RegExParserScanner.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RegularExpressions\Parsing\RegExParsingException.cs" />
+    <Compile Include="RegularExpressions\Transform\Builder.cs" />
+    <Compile Include="RegularExpressions\Transform\DfaState.cs" />
+    <Compile Include="RegularExpressions\Transform\NfaState.cs" />
+    <Compile Include="RegularExpressions\Util\SortedMultiMap.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="RegularExpressions\Parsing\RegExParserParser.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RegExParserParser.cs</LastGenOutput>
+    </Content>
+    <Content Include="RegularExpressions\Parsing\RegExParserScanner.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RegExParserScanner.cs</LastGenOutput>
+    </Content>
+    <Content Include="RegularExpressions\Parsing\TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

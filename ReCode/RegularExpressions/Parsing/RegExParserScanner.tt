@@ -1,0 +1,113 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="$(SolutionDir)ReCode\\bin\\Release\\ReCode.dll" #>
+<#@ import namespace="ReCode" #>
+<#@ output extension=".cs" #>
+using System;
+using System.Text;
+using System.Collections.Generic;
+using ReCode.RegularExpressions.Parsing.Nodes;
+
+namespace ReCode.RegularExpressions.Parsing 
+{
+	public partial class RegExParser {
+		public unsafe KeyValuePair<Token, RegExNode> NextToken(){
+            fixed(char * ptr = _exp){
+                var pLimit = ptr + _exp.Length;
+                
+                skip:
+                {
+                    var pStart = ptr + _position;
+                    var pNext = pStart;
+                    var pEnd = pStart; 
+                    if(pNext >= pLimit) return new KeyValuePair<Token, RegExNode>(Token.END, null);
+                    <#
+                    foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+                        if(token.Matches(@"[']"))                              { #> _position = (int)(pEnd-ptr); pNext = pEnd; goto incaseString; <# }
+                        if(token.Matches(@"[""]"))                             { #> _position = (int)(pEnd-ptr); pNext = pEnd; goto caseString; <# }
+                        if(token.Matches(@"[\|]"))                             { #> _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Bar, null); <# }
+                        if(token.Matches(@"[\(]"))                             { #> _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.ParBegin, null); <# }
+                        if(token.Matches(@"[\)]"))                             { #> _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.ParEnd, null); <# }
+                        if(token.Matches(@"[\+]"))                             { #> _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Plus, null); <# }
+                        if(token.Matches(@"[\?]"))                             { #> _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Question, null); <# }
+                        if(token.Matches(@"[\*]"))                             { #> _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Star, null); <# }
+                        if(token.Matches(@"[\\]"))                             { #> _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Except, null); <# }
+                        if(token.Matches(@"[\[]"))                             { #> _position = (int)(pEnd-ptr); pNext = pEnd; goto range; <# }
+                        if(token.Matches(@"[ ]+"))                             { #> _position = (int)(pEnd-ptr); pNext = pEnd; goto skip; <# }
+                        if(token.Matches(@"[\~][0-9]+"))                       { #> _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Accept, new RegExNodeAccept(null, ushort.Parse(new string(pStart+1, 0, ((int)(pEnd-pStart))-1)))); <# }
+                        if(token.Matches(@"([A-Za-z])([A-Za-z0-9])*"))         { #> _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Name, new RegExNodeName(new string(pStart, 0, (int)(pEnd-pStart)))); <# }
+                        if(token.Fails)                                        { #> throw new Exception("Syntax error."); <# }
+                    }
+                    #>
+                }
+
+
+                incaseString:
+                {
+                    var sb = new StringBuilder();
+                    nextIncaseChar:
+                    var pStart = ptr + _position;
+                    var pNext = pStart;
+                    var pEnd = pStart; 
+                    <#
+                    foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+                        if(token.Matches(@"[']"))                              { #> _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Phrase, new RegExNodeSequence(sb.ToString(), RegExCasing.Insensitive)); <# }
+                        if(token.Matches(@"[\\][t]"))                          { #> sb.Append((char)9); _position = (int)(pEnd-ptr); goto nextIncaseChar;  <# }
+                        if(token.Matches(@"[\\][n]"))                          { #> sb.Append((char)10); _position = (int)(pEnd-ptr); goto nextIncaseChar; <# }
+                        if(token.Matches(@"[\\][r]"))                          { #> sb.Append((char)13); _position = (int)(pEnd-ptr); goto nextIncaseChar; <# }
+                        if(token.Matches(@"[\\][.]"))                          { #> sb.Append(pStart[1]); _position = (int)(pEnd-ptr); goto nextIncaseChar; <# }
+                        if(token.Matches(@"[.]"))                              { #> sb.Append(pStart[0]); _position = (int)(pEnd-ptr); goto nextIncaseChar; <# }
+                        if(token.Fails)                                        { #> throw new Exception("Syntax error."); <# }
+                    }
+                    #>
+                }
+                caseString:
+                {
+                    var sb = new StringBuilder();
+                    nextCaseChar:
+                    var pStart = ptr + _position;
+                    var pNext = pStart;
+                    var pEnd = pStart; 
+                    <#
+                    foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+                        if(token.Matches(@"[""]"))                             { #> _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Phrase, new RegExNodeSequence(sb.ToString(), RegExCasing.Sensitive)); <# }
+                        if(token.Matches(@"[\\][t]"))                          { #> sb.Append((char)9); _position = (int)(pEnd-ptr); goto nextCaseChar;  <# }
+                        if(token.Matches(@"[\\][n]"))                          { #> sb.Append((char)10); _position = (int)(pEnd-ptr); goto nextCaseChar; <# }
+                        if(token.Matches(@"[\\][r]"))                          { #> sb.Append((char)13); _position = (int)(pEnd-ptr); goto nextCaseChar; <# }
+                        if(token.Matches(@"[\\][.]"))                          { #> sb.Append(pStart[1]); _position = (int)(pEnd-ptr); goto nextCaseChar; <# }
+                        if(token.Matches(@"[.]"))                              { #> sb.Append(pStart[0]); _position = (int)(pEnd-ptr); goto nextCaseChar; <# }
+                        if(token.Fails)                                        { #> throw new Exception("Syntax error."); <# }
+                    }
+                    #>
+                }
+                range:
+                {   
+                    var ranges = new List<RegExInputRange>();
+                    nextRangeChar:
+                    var pStart = ptr + _position;
+                    var pNext = pStart;
+                    var pEnd = pStart; 
+                    <#
+                    foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
+                        if(token.Matches(@"[\]]"))                             { #> _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Range, new RegExNodeRanges(ranges)); <# }
+                        // making ranges
+                        if(token.Matches(@"[0-9][\-][0-9]"))                   { #> ranges.Add(new RegExInputRange(pStart[0], pStart[2])); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
+                        if(token.Matches(@"[A-Z][\-][A-Z]"))                   { #> ranges.Add(new RegExInputRange(pStart[0], pStart[2])); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
+                        if(token.Matches(@"[a-z][\-][a-z]"))                   { #> ranges.Add(new RegExInputRange(pStart[0], pStart[2])); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
+                        if(token.Matches(@"[\\][t]"))                          { #> ranges.Add(new RegExInputRange((char)9)); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
+                        if(token.Matches(@"[\\][n]"))                          { #> ranges.Add(new RegExInputRange((char)10)); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
+                        if(token.Matches(@"[\\][r]"))                          { #> ranges.Add(new RegExInputRange((char)13)); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
+
+                        // when someone write \x we match the letter x
+                        if(token.Matches(@"[\\][.]"))                          { #> ranges.Add(new RegExInputRange(pStart[1])); _position = (int)(pEnd-ptr); goto nextRangeChar; <# }
+                        // when someone write . we match any letter
+                        if(token.Matches(@"[\.]"))                             { #> ranges.Add(new RegExInputRange()); _position = (int)(pEnd-ptr); goto nextRangeChar; <# }
+                        // just copy any other letter into the pattern
+                        if(token.Matches(@"[.]"))                              { #> ranges.Add(new RegExInputRange(pStart[0])); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
+                        if(token.Fails)                                        { #> throw new Exception("Syntax error."); <# }
+                    }
+                    #>
+                }
+            }
+        }
+    }
+}

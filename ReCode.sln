@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReCode", "ReCode\ReCode.csproj", "{8B925EAA-5FD2-4978-B45D-8D5D47E036A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReCodeTest", "ReCodeTest\ReCodeTest.csproj", "{690B856A-5F88-4F38-8A10-33DCD477E343}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B925EAA-5FD2-4978-B45D-8D5D47E036A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B925EAA-5FD2-4978-B45D-8D5D47E036A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B925EAA-5FD2-4978-B45D-8D5D47E036A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B925EAA-5FD2-4978-B45D-8D5D47E036A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{690B856A-5F88-4F38-8A10-33DCD477E343}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{690B856A-5F88-4F38-8A10-33DCD477E343}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{690B856A-5F88-4F38-8A10-33DCD477E343}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{690B856A-5F88-4F38-8A10-33DCD477E343}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
