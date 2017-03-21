@@ -76,33 +76,11 @@
     <Compile Include="RegularExpressions\Parsing\Nodes\RegExType.cs" />
     <Compile Include="RegularExpressions\Parsing\Nodes\RexExInputRange.cs" />
     <Compile Include="RegularExpressions\Parsing\RegExParser.cs" />
-    <Compile Include="RegularExpressions\Parsing\RegExParserParser.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RegExParserParser.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RegularExpressions\Parsing\RegExParserScanner.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RegExParserScanner.tt</DependentUpon>
-    </Compile>
     <Compile Include="RegularExpressions\Parsing\RegExParsingException.cs" />
     <Compile Include="RegularExpressions\Transform\Builder.cs" />
     <Compile Include="RegularExpressions\Transform\DfaState.cs" />
     <Compile Include="RegularExpressions\Transform\NfaState.cs" />
     <Compile Include="RegularExpressions\Util\SortedMultiMap.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="RE.png" />
-    <Content Include="RegularExpressions\Parsing\RegExParserParser.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>RegExParserParser.cs</LastGenOutput>
-    </Content>
-    <Content Include="RegularExpressions\Parsing\RegExParserScanner.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>RegExParserScanner.cs</LastGenOutput>
-    </Content>
-    <Content Include="RegularExpressions\Parsing\TODO.txt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

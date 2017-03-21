@@ -1,16 +1,18 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
-    <version>$version$</version>
-    <title>$title$</title>
+    <id>ReCode</id>
+    <version>1.0.1</version>
+    <title>ReCode</title>
     <authors>Thomas Rask Thomsen</authors>
-    <owners>$author$</owners>
     <licenseUrl>https://opensource.org/licenses/FPL-1.0.0</licenseUrl>
     <projectUrl>https://github.com/thomasraskthomsen/ReCode</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>C# Visual Studio T4 template processing for compiling regular expressions into code for ultra fast execution of several parallel regular expressions. This project is inspired by the re2c regular expression compiler.</description>
     <summary>T4 Text Template Regular Expression Compiler for C#.</summary>
-    <tags>Regular Expressions Scannar Parser</tags>
+    <tags>Regular Expression Code Generator Compiler Scanner Parser</tags>
   </metadata>
+  <files>
+    <file src="bin\Release\ReCode.dll" target="lib\452\ReCode.dll" />
+  </files>
 </package>
