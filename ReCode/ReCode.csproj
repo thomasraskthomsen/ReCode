@@ -76,6 +76,16 @@
     <Compile Include="RegularExpressions\Parsing\Nodes\RegExType.cs" />
     <Compile Include="RegularExpressions\Parsing\Nodes\RexExInputRange.cs" />
     <Compile Include="RegularExpressions\Parsing\RegExParser.cs" />
+    <Compile Include="RegularExpressions\Parsing\RegExParserParser.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RegExParserParser.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RegularExpressions\Parsing\RegExParserScanner.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RegExParserScanner.tt</DependentUpon>
+    </Compile>
     <Compile Include="RegularExpressions\Parsing\RegExParsingException.cs" />
     <Compile Include="RegularExpressions\Transform\Builder.cs" />
     <Compile Include="RegularExpressions\Transform\DfaState.cs" />
@@ -87,6 +97,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ReCode.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="RegularExpressions\Parsing\RegExParserParser.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RegExParserParser.cs</LastGenOutput>
+    </Content>
+    <Content Include="RegularExpressions\Parsing\RegExParserScanner.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RegExParserScanner.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
