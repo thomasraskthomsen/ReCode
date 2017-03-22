@@ -2,9 +2,10 @@
 <package >
   <metadata>
     <id>ReCode</id>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <title>ReCode</title>
     <authors>Thomas Rask Thomsen</authors>
+    <owners>Thomas Rask Thomsen</owners>
     <licenseUrl>https://opensource.org/licenses/FPL-1.0.0</licenseUrl>
     <projectUrl>https://github.com/thomasraskthomsen/ReCode</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

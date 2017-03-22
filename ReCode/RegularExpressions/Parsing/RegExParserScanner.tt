@@ -90,9 +90,7 @@ namespace ReCode.RegularExpressions.Parsing
                     foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
                         if(token.Matches(@"[\]]"))                             { #> _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Range, new RegExNodeRanges(ranges)); <# }
                         // making ranges
-                        if(token.Matches(@"[0-9][\-][0-9]"))                   { #> ranges.Add(new RegExInputRange(pStart[0], pStart[2])); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
-                        if(token.Matches(@"[A-Z][\-][A-Z]"))                   { #> ranges.Add(new RegExInputRange(pStart[0], pStart[2])); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
-                        if(token.Matches(@"[a-z][\-][a-z]"))                   { #> ranges.Add(new RegExInputRange(pStart[0], pStart[2])); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
+                        if(token.Matches("[\u0000-\ufffe][\\-][\u0000-\ufffe]")) { #> ranges.Add(new RegExInputRange(pStart[0], pStart[2])); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
                         if(token.Matches(@"[\\][t]"))                          { #> ranges.Add(new RegExInputRange((char)9)); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
                         if(token.Matches(@"[\\][n]"))                          { #> ranges.Add(new RegExInputRange((char)10)); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
                         if(token.Matches(@"[\\][r]"))                          { #> ranges.Add(new RegExInputRange((char)13)); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }

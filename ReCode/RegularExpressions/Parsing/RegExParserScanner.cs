@@ -610,247 +610,154 @@ nonaccept2:
  *  |  +-Ranges(']')
  *  +-Accept(1)
  *  |  +-Concat
- *  |     +-Ranges(['0'-'9'])
- *  |     +-Ranges('-')
- *  |     +-Ranges(['0'-'9'])
+ *  |     +-Ranges([0x00-0xFFFE])
+ *  |     +-Ranges(['\'-']'],'[',[0x00-0xFFFE])
  *  +-Accept(2)
- *  |  +-Concat
- *  |     +-Ranges(['A'-'Z'])
- *  |     +-Ranges('-')
- *  |     +-Ranges(['A'-'Z'])
- *  +-Accept(3)
- *  |  +-Concat
- *  |     +-Ranges(['a'-'z'])
- *  |     +-Ranges('-')
- *  |     +-Ranges(['a'-'z'])
- *  +-Accept(4)
  *  |  +-Concat
  *  |     +-Ranges('\')
  *  |     +-Ranges('t')
- *  +-Accept(5)
+ *  +-Accept(3)
  *  |  +-Concat
  *  |     +-Ranges('\')
  *  |     +-Ranges('n')
- *  +-Accept(6)
+ *  +-Accept(4)
  *  |  +-Concat
  *  |     +-Ranges('\')
  *  |     +-Ranges('r')
- *  +-Accept(7)
+ *  +-Accept(5)
  *  |  +-Concat
  *  |     +-Ranges('\')
  *  |     +-Ranges([0x00-0xFFFF])
- *  +-Accept(8)
+ *  +-Accept(6)
  *  |  +-Ranges('.')
- *  +-Accept(9)
+ *  +-Accept(7)
  *     +-Ranges([0x00-0xFFFF])
  */
 /*
  * DFA STATE 0
  * [0x00-'-'] -> 1
  * '.' -> 2
- * '/' -> 1
- * ['0'-'9'] -> 3
- * [':'-'@'] -> 1
- * ['A'-'Z'] -> 4
- * '[' -> 1
- * '\' -> 5
- * ']' -> 6
- * ['^'-'`'] -> 1
- * ['a'-'z'] -> 7
- * ['{'-0xFFFF] -> 1
+ * ['/'-'['] -> 1
+ * '\' -> 3
+ * ']' -> 4
+ * ['^'-0xFFFE] -> 1
  */
 if(pNext >= pLimit) goto nonaccept3;
 var current = *pNext++;
-if(current < 0x5B) /* ('Z') '[' */  {
-    if(current < 0x30) /* ('/') '0' */  {
-        if(current < 0x2E) /* ('-') '.' */ 
-            goto state3_1;
-        if(current < 0x2F) /* ('.') '/' */ 
-            goto state3_2;
+if(current < 0x5C) /* ('[') '\' */  {
+    if(current < 0x2E) /* ('-') '.' */ 
         goto state3_1;
-    }
-    if(current < 0x3A) /* ('9') ':' */ 
-        goto state3_3;
-    if(current < 0x41) /* ('@') 'A' */ 
-        goto state3_1;
-    goto state3_4;
+    if(current < 0x2F) /* ('.') '/' */ 
+        goto state3_2;
+    goto state3_1;
 }
 if(current < 0x5E) /* (']') '^' */  {
-    if(current < 0x5C) /* ('[') '\' */ 
-        goto state3_1;
     if(current < 0x5D) /* ('\') ']' */ 
-        goto state3_5;
-    goto state3_6;
+        goto state3_3;
+    goto state3_4;
 }
-if(current < 0x61) /* ('`') 'a' */ 
+if(current < 0xFFFF)
     goto state3_1;
-if(current < 0x7B) /* ('z') '{' */ 
-    goto state3_7;
-goto state3_1;
+goto nonaccept3;
 /*
- * DFA STATE 1 (accepts to 9)
+ * DFA STATE 1 (accepts to 7)
+ * [0x00-'Z'] -> 5
+ * '[' -> 5
+ * ['\'-']'] -> 5
+ * ['^'-0xFFFE] -> 5
  */
 state3_1:
 pEnd = pNext;
-goto accept3_9;
+if(pNext >= pLimit) goto accept3_7;
+current = *pNext++;
+if(current < 0xFFFF)
+    goto state3_5;
+goto accept3_7;
 /*
- * DFA STATE 2 (accepts to 8)
+ * DFA STATE 2 (accepts to 6)
+ * [0x00-'Z'] -> 5
+ * '[' -> 5
+ * ['\'-']'] -> 5
+ * ['^'-0xFFFE] -> 5
  */
 state3_2:
 pEnd = pNext;
-goto accept3_8;
+if(pNext >= pLimit) goto accept3_6;
+current = *pNext++;
+if(current < 0xFFFF)
+    goto state3_5;
+goto accept3_6;
 /*
- * DFA STATE 3 (accepts to 9)
- * '-' -> 8
+ * DFA STATE 3 (accepts to 7)
+ * [0x00-'Z'] -> 6
+ * '[' -> 6
+ * ['\'-']'] -> 6
+ * ['^'-'m'] -> 6
+ * 'n' -> 7
+ * ['o'-'q'] -> 6
+ * 'r' -> 8
+ * 's' -> 6
+ * 't' -> 9
+ * ['u'-0xFFFE] -> 6
  */
 state3_3:
 pEnd = pNext;
-if(pNext >= pLimit) goto accept3_9;
+if(pNext >= pLimit) goto accept3_7;
 current = *pNext++;
-if(current < 0x2D) /* (',') '-' */ 
-    goto accept3_9;
-if(current < 0x2E) /* ('-') '.' */ 
+if(current < 0x73) /* ('r') 's' */  {
+    if(current < 0x6F) /* ('n') 'o' */  {
+        if(current < 0x6E) /* ('m') 'n' */ 
+            goto state3_6;
+        goto state3_7;
+    }
+    if(current < 0x72) /* ('q') 'r' */ 
+        goto state3_6;
     goto state3_8;
-goto accept3_9;
+}
+if(current < 0x75) /* ('t') 'u' */  {
+    if(current < 0x74) /* ('s') 't' */ 
+        goto state3_6;
+    goto state3_9;
+}
+if(current < 0xFFFF)
+    goto state3_6;
+goto accept3_7;
 /*
- * DFA STATE 4 (accepts to 9)
- * '-' -> 9
+ * DFA STATE 4 (accepts to 0)
  */
 state3_4:
 pEnd = pNext;
-if(pNext >= pLimit) goto accept3_9;
-current = *pNext++;
-if(current < 0x2D) /* (',') '-' */ 
-    goto accept3_9;
-if(current < 0x2E) /* ('-') '.' */ 
-    goto state3_9;
-goto accept3_9;
+goto accept3_0;
 /*
- * DFA STATE 5 (accepts to 9)
- * [0x00-'m'] -> 10
- * 'n' -> 11
- * ['o'-'q'] -> 10
- * 'r' -> 12
- * 's' -> 10
- * 't' -> 13
- * ['u'-0xFFFF] -> 10
+ * DFA STATE 5 (accepts to 1)
  */
 state3_5:
 pEnd = pNext;
-if(pNext >= pLimit) goto accept3_9;
-current = *pNext++;
-if(current < 0x72) /* ('q') 'r' */  {
-    if(current < 0x6E) /* ('m') 'n' */ 
-        goto state3_10;
-    if(current < 0x6F) /* ('n') 'o' */ 
-        goto state3_11;
-    goto state3_10;
-}
-if(current < 0x74) /* ('s') 't' */  {
-    if(current < 0x73) /* ('r') 's' */ 
-        goto state3_12;
-    goto state3_10;
-}
-if(current < 0x75) /* ('t') 'u' */ 
-    goto state3_13;
-goto state3_10;
+goto accept3_1;
 /*
- * DFA STATE 6 (accepts to 0)
+ * DFA STATE 6 (accepts to 1)
  */
 state3_6:
 pEnd = pNext;
-goto accept3_0;
+goto accept3_1;
 /*
- * DFA STATE 7 (accepts to 9)
- * '-' -> 14
+ * DFA STATE 7 (accepts to 1)
  */
 state3_7:
 pEnd = pNext;
-if(pNext >= pLimit) goto accept3_9;
-current = *pNext++;
-if(current < 0x2D) /* (',') '-' */ 
-    goto accept3_9;
-if(current < 0x2E) /* ('-') '.' */ 
-    goto state3_14;
-goto accept3_9;
+goto accept3_1;
 /*
- * DFA STATE 8
- * ['0'-'9'] -> 15
+ * DFA STATE 8 (accepts to 1)
  */
 state3_8:
-if(pNext >= pLimit) goto accept3_9;
-current = *pNext++;
-if(current < 0x30) /* ('/') '0' */ 
-    goto accept3_9;
-if(current < 0x3A) /* ('9') ':' */ 
-    goto state3_15;
-goto accept3_9;
-/*
- * DFA STATE 9
- * ['A'-'Z'] -> 16
- */
-state3_9:
-if(pNext >= pLimit) goto accept3_9;
-current = *pNext++;
-if(current < 0x41) /* ('@') 'A' */ 
-    goto accept3_9;
-if(current < 0x5B) /* ('Z') '[' */ 
-    goto state3_16;
-goto accept3_9;
-/*
- * DFA STATE 10 (accepts to 7)
- */
-state3_10:
-pEnd = pNext;
-goto accept3_7;
-/*
- * DFA STATE 11 (accepts to 5)
- */
-state3_11:
-pEnd = pNext;
-goto accept3_5;
-/*
- * DFA STATE 12 (accepts to 6)
- */
-state3_12:
-pEnd = pNext;
-goto accept3_6;
-/*
- * DFA STATE 13 (accepts to 4)
- */
-state3_13:
-pEnd = pNext;
-goto accept3_4;
-/*
- * DFA STATE 14
- * ['a'-'z'] -> 17
- */
-state3_14:
-if(pNext >= pLimit) goto accept3_9;
-current = *pNext++;
-if(current < 0x61) /* ('`') 'a' */ 
-    goto accept3_9;
-if(current < 0x7B) /* ('z') '{' */ 
-    goto state3_17;
-goto accept3_9;
-/*
- * DFA STATE 15 (accepts to 1)
- */
-state3_15:
 pEnd = pNext;
 goto accept3_1;
 /*
- * DFA STATE 16 (accepts to 2)
+ * DFA STATE 9 (accepts to 1)
  */
-state3_16:
+state3_9:
 pEnd = pNext;
-goto accept3_2;
-/*
- * DFA STATE 17 (accepts to 3)
- */
-state3_17:
-pEnd = pNext;
-goto accept3_3;
+goto accept3_1;
 
 
 accept3_0:
@@ -861,26 +768,20 @@ accept3_1:
  ranges.Add(new RegExInputRange(pStart[0], pStart[2])); _position = (int)(pEnd-ptr); goto nextRangeChar;  
 accept3_2:
  pNext = pEnd;
- ranges.Add(new RegExInputRange(pStart[0], pStart[2])); _position = (int)(pEnd-ptr); goto nextRangeChar;  
+ ranges.Add(new RegExInputRange((char)9)); _position = (int)(pEnd-ptr); goto nextRangeChar;  
 accept3_3:
  pNext = pEnd;
- ranges.Add(new RegExInputRange(pStart[0], pStart[2])); _position = (int)(pEnd-ptr); goto nextRangeChar;  
+ ranges.Add(new RegExInputRange((char)10)); _position = (int)(pEnd-ptr); goto nextRangeChar;  
 accept3_4:
  pNext = pEnd;
- ranges.Add(new RegExInputRange((char)9)); _position = (int)(pEnd-ptr); goto nextRangeChar;  
+ ranges.Add(new RegExInputRange((char)13)); _position = (int)(pEnd-ptr); goto nextRangeChar;  
 accept3_5:
  pNext = pEnd;
- ranges.Add(new RegExInputRange((char)10)); _position = (int)(pEnd-ptr); goto nextRangeChar;  
+ ranges.Add(new RegExInputRange(pStart[1])); _position = (int)(pEnd-ptr); goto nextRangeChar; 
 accept3_6:
  pNext = pEnd;
- ranges.Add(new RegExInputRange((char)13)); _position = (int)(pEnd-ptr); goto nextRangeChar;  
-accept3_7:
- pNext = pEnd;
- ranges.Add(new RegExInputRange(pStart[1])); _position = (int)(pEnd-ptr); goto nextRangeChar; 
-accept3_8:
- pNext = pEnd;
  ranges.Add(new RegExInputRange()); _position = (int)(pEnd-ptr); goto nextRangeChar; 
-accept3_9:
+accept3_7:
  pNext = pEnd;
  ranges.Add(new RegExInputRange(pStart[0])); _position = (int)(pEnd-ptr); goto nextRangeChar;  
 nonaccept3:

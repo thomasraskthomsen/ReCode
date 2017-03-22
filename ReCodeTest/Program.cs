@@ -255,16 +255,16 @@ namespace ReCodeTest
 
         static void Main(string[] args)
         {
-            TestGenerationSample();
-            TestGeneration();
-            TestGenerationAmbiguous();
-            TestReGenerator();
+            //TestGenerationSample();
+            //TestGeneration();
+            //TestGenerationAmbiguous();
+            //TestReGenerator();
             TestRe();
-            TestLr();
-            TestRegExParser2Scanner();
-            TestRegExParser2();
-            BugTest();
-            TestRe3();
+            //TestLr();
+            //TestRegExParser2Scanner();
+            //TestRegExParser2();
+            //BugTest();
+            //TestRe3();
         }
     }
 }
