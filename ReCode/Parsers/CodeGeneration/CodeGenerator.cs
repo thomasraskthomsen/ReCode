@@ -140,7 +140,7 @@ namespace ReCode.Parsers.CodeGeneration
 
                         case LrActionType.Shift:
                             WriteLine(Concatenate(" ", actionType, pair => $" case {pair.Key}:"));
-                            WriteLine("  /* perform shift to state {action.Target} */");
+                            WriteLine($"  /* perform shift to state {action.Target} */");
                             WriteLine("  _valueStack.Push(currentToken.Value);");
                             WriteLine("  _stateStack.Push((int)currentToken.Key);");
                             WriteLine($"  {ReadToken}");
