@@ -361,7 +361,7 @@ namespace ReCode.RegularExpressions.Transform
                 lastValue = pair.Value;
             }
             if (lastSuccessor == char.MaxValue + 1)
-                points.Remove(lastSuccessor);
+                points.Remove(lastSuccessor); 
             else
                 lastValue = null;
 
@@ -391,7 +391,7 @@ namespace ReCode.RegularExpressions.Transform
                     scope.IncrementPos(scope.AcceptLabel(currentState), node.Id == 0);
             }
             var pointList = points.ToList();
-            if(pointList.Count == 0)
+            if((pointList.Count == 0) && (node.Count == 0))
                 scope.Goto(scope.AcceptLabel(currentState));
             else
                 SubGenerate(scope, pointList, 0, points.Count-1, lastValue, currentState);

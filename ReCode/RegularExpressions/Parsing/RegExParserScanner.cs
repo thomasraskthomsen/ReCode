@@ -610,8 +610,9 @@ nonaccept2:
  *  |  +-Ranges(']')
  *  +-Accept(1)
  *  |  +-Concat
- *  |     +-Ranges([0x00-0xFFFE])
- *  |     +-Ranges(['\'-']'],'[',[0x00-0xFFFE])
+ *  |     +-Ranges([0x00-0xFFFF])
+ *  |     +-Sequence(CaseInsensitive,'-')
+ *  |     +-Ranges([0x00-0xFFFF])
  *  +-Accept(2)
  *  |  +-Concat
  *  |     +-Ranges('\')
@@ -640,7 +641,7 @@ nonaccept2:
  * ['/'-'['] -> 1
  * '\' -> 3
  * ']' -> 4
- * ['^'-0xFFFE] -> 1
+ * ['^'-0xFFFF] -> 1
  */
 if(pNext >= pLimit) goto nonaccept3;
 var current = *pNext++;
@@ -651,77 +652,73 @@ if(current < 0x5C) /* ('[') '\' */  {
         goto state3_2;
     goto state3_1;
 }
-if(current < 0x5E) /* (']') '^' */  {
-    if(current < 0x5D) /* ('\') ']' */ 
-        goto state3_3;
+if(current < 0x5D) /* ('\') ']' */ 
+    goto state3_3;
+if(current < 0x5E) /* (']') '^' */ 
     goto state3_4;
-}
-if(current < 0xFFFF)
-    goto state3_1;
-goto nonaccept3;
+goto state3_1;
 /*
  * DFA STATE 1 (accepts to 7)
- * [0x00-'Z'] -> 5
- * '[' -> 5
- * ['\'-']'] -> 5
- * ['^'-0xFFFE] -> 5
+ * '-' -> 5
  */
 state3_1:
 pEnd = pNext;
 if(pNext >= pLimit) goto accept3_7;
 current = *pNext++;
-if(current < 0xFFFF)
+if(current < 0x2D) /* (',') '-' */ 
+    goto accept3_7;
+if(current < 0x2E) /* ('-') '.' */ 
     goto state3_5;
 goto accept3_7;
 /*
  * DFA STATE 2 (accepts to 6)
- * [0x00-'Z'] -> 5
- * '[' -> 5
- * ['\'-']'] -> 5
- * ['^'-0xFFFE] -> 5
+ * '-' -> 6
  */
 state3_2:
 pEnd = pNext;
 if(pNext >= pLimit) goto accept3_6;
 current = *pNext++;
-if(current < 0xFFFF)
-    goto state3_5;
+if(current < 0x2D) /* (',') '-' */ 
+    goto accept3_6;
+if(current < 0x2E) /* ('-') '.' */ 
+    goto state3_6;
 goto accept3_6;
 /*
  * DFA STATE 3 (accepts to 7)
- * [0x00-'Z'] -> 6
- * '[' -> 6
- * ['\'-']'] -> 6
- * ['^'-'m'] -> 6
- * 'n' -> 7
- * ['o'-'q'] -> 6
- * 'r' -> 8
- * 's' -> 6
- * 't' -> 9
- * ['u'-0xFFFE] -> 6
+ * [0x00-','] -> 7
+ * '-' -> 8
+ * ['.'-'m'] -> 7
+ * 'n' -> 9
+ * ['o'-'q'] -> 7
+ * 'r' -> 10
+ * 's' -> 7
+ * 't' -> 11
+ * ['u'-0xFFFF] -> 7
  */
 state3_3:
 pEnd = pNext;
 if(pNext >= pLimit) goto accept3_7;
 current = *pNext++;
-if(current < 0x73) /* ('r') 's' */  {
-    if(current < 0x6F) /* ('n') 'o' */  {
-        if(current < 0x6E) /* ('m') 'n' */ 
-            goto state3_6;
-        goto state3_7;
+if(current < 0x6F) /* ('n') 'o' */  {
+    if(current < 0x2E) /* ('-') '.' */  {
+        if(current < 0x2D) /* (',') '-' */ 
+            goto state3_7;
+        goto state3_8;
     }
-    if(current < 0x72) /* ('q') 'r' */ 
-        goto state3_6;
-    goto state3_8;
-}
-if(current < 0x75) /* ('t') 'u' */  {
-    if(current < 0x74) /* ('s') 't' */ 
-        goto state3_6;
+    if(current < 0x6E) /* ('m') 'n' */ 
+        goto state3_7;
     goto state3_9;
 }
-if(current < 0xFFFF)
-    goto state3_6;
-goto accept3_7;
+if(current < 0x73) /* ('r') 's' */  {
+    if(current < 0x72) /* ('q') 'r' */ 
+        goto state3_7;
+    goto state3_10;
+}
+if(current < 0x74) /* ('s') 't' */ 
+    goto state3_7;
+if(current < 0x75) /* ('t') 'u' */ 
+    goto state3_11;
+goto state3_7;
 /*
  * DFA STATE 4 (accepts to 0)
  */
@@ -729,33 +726,58 @@ state3_4:
 pEnd = pNext;
 goto accept3_0;
 /*
- * DFA STATE 5 (accepts to 1)
+ * DFA STATE 5
+ * [0x00-0xFFFF] -> 12
  */
 state3_5:
-pEnd = pNext;
-goto accept3_1;
+if(pNext >= pLimit) goto accept3_7;
+current = *pNext++;
+goto state3_12;
 /*
- * DFA STATE 6 (accepts to 1)
+ * DFA STATE 6
+ * [0x00-0xFFFF] -> 12
  */
 state3_6:
-pEnd = pNext;
-goto accept3_1;
+if(pNext >= pLimit) goto accept3_6;
+current = *pNext++;
+goto state3_12;
 /*
- * DFA STATE 7 (accepts to 1)
+ * DFA STATE 7 (accepts to 5)
  */
 state3_7:
 pEnd = pNext;
-goto accept3_1;
+goto accept3_5;
 /*
- * DFA STATE 8 (accepts to 1)
+ * DFA STATE 8 (accepts to 5)
+ * [0x00-0xFFFF] -> 12
  */
 state3_8:
 pEnd = pNext;
-goto accept3_1;
+if(pNext >= pLimit) goto accept3_5;
+current = *pNext++;
+goto state3_12;
 /*
- * DFA STATE 9 (accepts to 1)
+ * DFA STATE 9 (accepts to 3)
  */
 state3_9:
+pEnd = pNext;
+goto accept3_3;
+/*
+ * DFA STATE 10 (accepts to 4)
+ */
+state3_10:
+pEnd = pNext;
+goto accept3_4;
+/*
+ * DFA STATE 11 (accepts to 2)
+ */
+state3_11:
+pEnd = pNext;
+goto accept3_2;
+/*
+ * DFA STATE 12 (accepts to 1)
+ */
+state3_12:
 pEnd = pNext;
 goto accept3_1;
 
