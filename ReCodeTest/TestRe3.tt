@@ -19,9 +19,9 @@ namespace ReCodeTest {
         token.Define("digitHex", "[0-9a-fA-F]");
         token.Define("ws", "[ \\n\\r\\t]");
         token.Define("letter", "[a-zA-Z]");
-        token.Define("tokenChar", "[a-zA-Z0-9:-]");
-        token.Define("letterCode", "\"&#\" digit+ \";\"");
-        token.Define("letterCodeHex", "\"&#x\" digitHex+ \";\"");
+        token.Define("tokenChar", "[a-zA-Z0-9\\-:]");
+        token.Define("letterCode", "'&#' digit+ ';'");
+        token.Define("letterCodeHex", "'&#x' digitHex+ ';'");
         token.Define("beginTagPart", "\"<\" letter tokenChar*");
         token.Define("endTagPart",  "\"</\" letter tokenChar*");
         if(token.Matches(@"'<--'"))                    { #> goto inCommentMode; <#        } 
@@ -47,7 +47,7 @@ namespace ReCodeTest {
 <#
     foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
         token.Define("letter", "[a-zA-Z]");
-        token.Define("tokenChar", "[a-zA-Z0-9:-]");
+        token.Define("tokenChar", "[a-zA-Z0-9:\\-]");
         if(token.Matches(@"letter tokenChar*"))        { #> goto inBeginTagAttributeMode; <#        }
         if(token.Matches(@"'>'"))                      { #> goto textMode; <#        }
         if(token.Matches(@"'/>'"))                     { #> goto textMode; <#        }
@@ -59,7 +59,7 @@ namespace ReCodeTest {
     foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
         token.Define("ws", "[ \\n\\r\\t]");
         token.Define("letter", "[a-zA-Z]");
-        token.Define("tokenChar", "[a-zA-Z0-9:-]");
+        token.Define("tokenChar", "[a-zA-Z0-9:\\-]");
         if(token.Matches(@"ws"))                       { #> goto inBeginTagAttributeMode; <#        }
         if(token.Matches(@"letter tokenChar*"))        { #> goto inBeginTagAttributeMode; <#        }
         if(token.Matches(@"'='"))                      { #> goto inBeginTagAttributeValueMode; <#        }

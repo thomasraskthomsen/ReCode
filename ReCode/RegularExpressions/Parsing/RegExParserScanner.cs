@@ -70,250 +70,250 @@ namespace ReCode.RegularExpressions.Parsing
  * '|' -> 12
  * '~' -> 13
  */
-if(pNext >= pLimit) goto nonaccept0;
+if(pNext >= pLimit) goto nonaccept22;
 var current = *pNext++;
 if(current < 0x3F) /* ('>') '?' */  {
     if(current < 0x27) /* ('&') ''' */  {
         if(current < 0x21) /* (' ') '!' */  {
             if(current < 0x20)
-                goto nonaccept0;
-            goto state0_1;
+                goto nonaccept22;
+            goto state22_1;
         }
         if(current < 0x22) /* ('!') '"' */ 
-            goto nonaccept0;
+            goto nonaccept22;
         if(current < 0x23) /* ('"') '#' */ 
-            goto state0_2;
-        goto nonaccept0;
+            goto state22_2;
+        goto nonaccept22;
     }
     if(current < 0x2A) /* (')') '*' */  {
         if(current < 0x28) /* (''') '(' */ 
-            goto state0_3;
+            goto state22_3;
         if(current < 0x29) /* ('(') ')' */ 
-            goto state0_4;
-        goto state0_5;
+            goto state22_4;
+        goto state22_5;
     }
     if(current < 0x2B) /* ('*') '+' */ 
-        goto state0_6;
+        goto state22_6;
     if(current < 0x2C) /* ('+') ',' */ 
-        goto state0_7;
-    goto nonaccept0;
+        goto state22_7;
+    goto nonaccept22;
 }
 if(current < 0x61) /* ('`') 'a' */  {
     if(current < 0x5B) /* ('Z') '[' */  {
         if(current < 0x40) /* ('?') '@' */ 
-            goto state0_8;
+            goto state22_8;
         if(current < 0x41) /* ('@') 'A' */ 
-            goto nonaccept0;
-        goto state0_9;
+            goto nonaccept22;
+        goto state22_9;
     }
     if(current < 0x5C) /* ('[') '\' */ 
-        goto state0_10;
+        goto state22_10;
     if(current < 0x5D) /* ('\') ']' */ 
-        goto state0_11;
-    goto nonaccept0;
+        goto state22_11;
+    goto nonaccept22;
 }
 if(current < 0x7D) /* ('|') '}' */  {
     if(current < 0x7B) /* ('z') '{' */ 
-        goto state0_9;
+        goto state22_9;
     if(current < 0x7C) /* ('{') '|' */ 
-        goto nonaccept0;
-    goto state0_12;
+        goto nonaccept22;
+    goto state22_12;
 }
 if(current < 0x7E) /* ('}') '~' */ 
-    goto nonaccept0;
+    goto nonaccept22;
 if(current < 0x7F)
-    goto state0_13;
-goto nonaccept0;
+    goto state22_13;
+goto nonaccept22;
 /*
  * DFA STATE 1 (accepts to 10)
  * ' ' -> 1
  */
-state0_1:
+state22_1:
 pEnd = pNext;
-if(pNext >= pLimit) goto accept0_10;
+if(pNext >= pLimit) goto accept22_10;
 current = *pNext++;
 if(current < 0x20)
-    goto accept0_10;
+    goto accept22_10;
 if(current < 0x21) /* (' ') '!' */ 
-    goto state0_1;
-goto accept0_10;
+    goto state22_1;
+goto accept22_10;
 /*
  * DFA STATE 2 (accepts to 1)
  */
-state0_2:
+state22_2:
 pEnd = pNext;
-goto accept0_1;
+goto accept22_1;
 /*
  * DFA STATE 3 (accepts to 0)
  */
-state0_3:
+state22_3:
 pEnd = pNext;
-goto accept0_0;
+goto accept22_0;
 /*
  * DFA STATE 4 (accepts to 3)
  */
-state0_4:
+state22_4:
 pEnd = pNext;
-goto accept0_3;
+goto accept22_3;
 /*
  * DFA STATE 5 (accepts to 4)
  */
-state0_5:
+state22_5:
 pEnd = pNext;
-goto accept0_4;
+goto accept22_4;
 /*
  * DFA STATE 6 (accepts to 7)
  */
-state0_6:
+state22_6:
 pEnd = pNext;
-goto accept0_7;
+goto accept22_7;
 /*
  * DFA STATE 7 (accepts to 5)
  */
-state0_7:
+state22_7:
 pEnd = pNext;
-goto accept0_5;
+goto accept22_5;
 /*
  * DFA STATE 8 (accepts to 6)
  */
-state0_8:
+state22_8:
 pEnd = pNext;
-goto accept0_6;
+goto accept22_6;
 /*
  * DFA STATE 9 (accepts to 12)
  * ['0'-'9'] -> 14
  * ['A'-'Z'] -> 14
  * ['a'-'z'] -> 14
  */
-state0_9:
+state22_9:
 pEnd = pNext;
-if(pNext >= pLimit) goto accept0_12;
+if(pNext >= pLimit) goto accept22_12;
 current = *pNext++;
 if(current < 0x41) /* ('@') 'A' */  {
     if(current < 0x30) /* ('/') '0' */ 
-        goto accept0_12;
+        goto accept22_12;
     if(current < 0x3A) /* ('9') ':' */ 
-        goto state0_14;
-    goto accept0_12;
+        goto state22_14;
+    goto accept22_12;
 }
 if(current < 0x61) /* ('`') 'a' */  {
     if(current < 0x5B) /* ('Z') '[' */ 
-        goto state0_14;
-    goto accept0_12;
+        goto state22_14;
+    goto accept22_12;
 }
 if(current < 0x7B) /* ('z') '{' */ 
-    goto state0_14;
-goto accept0_12;
+    goto state22_14;
+goto accept22_12;
 /*
  * DFA STATE 10 (accepts to 9)
  */
-state0_10:
+state22_10:
 pEnd = pNext;
-goto accept0_9;
+goto accept22_9;
 /*
  * DFA STATE 11 (accepts to 8)
  */
-state0_11:
+state22_11:
 pEnd = pNext;
-goto accept0_8;
+goto accept22_8;
 /*
  * DFA STATE 12 (accepts to 2)
  */
-state0_12:
+state22_12:
 pEnd = pNext;
-goto accept0_2;
+goto accept22_2;
 /*
  * DFA STATE 13
  * ['0'-'9'] -> 15
  */
-state0_13:
-if(pNext >= pLimit) goto nonaccept0;
+state22_13:
+if(pNext >= pLimit) goto nonaccept22;
 current = *pNext++;
 if(current < 0x30) /* ('/') '0' */ 
-    goto nonaccept0;
+    goto nonaccept22;
 if(current < 0x3A) /* ('9') ':' */ 
-    goto state0_15;
-goto nonaccept0;
+    goto state22_15;
+goto nonaccept22;
 /*
  * DFA STATE 14 (accepts to 12)
  * ['0'-'9'] -> 14
  * ['A'-'Z'] -> 14
  * ['a'-'z'] -> 14
  */
-state0_14:
+state22_14:
 pEnd = pNext;
-if(pNext >= pLimit) goto accept0_12;
+if(pNext >= pLimit) goto accept22_12;
 current = *pNext++;
 if(current < 0x41) /* ('@') 'A' */  {
     if(current < 0x30) /* ('/') '0' */ 
-        goto accept0_12;
+        goto accept22_12;
     if(current < 0x3A) /* ('9') ':' */ 
-        goto state0_14;
-    goto accept0_12;
+        goto state22_14;
+    goto accept22_12;
 }
 if(current < 0x61) /* ('`') 'a' */  {
     if(current < 0x5B) /* ('Z') '[' */ 
-        goto state0_14;
-    goto accept0_12;
+        goto state22_14;
+    goto accept22_12;
 }
 if(current < 0x7B) /* ('z') '{' */ 
-    goto state0_14;
-goto accept0_12;
+    goto state22_14;
+goto accept22_12;
 /*
  * DFA STATE 15 (accepts to 11)
  * ['0'-'9'] -> 15
  */
-state0_15:
+state22_15:
 pEnd = pNext;
-if(pNext >= pLimit) goto accept0_11;
+if(pNext >= pLimit) goto accept22_11;
 current = *pNext++;
 if(current < 0x30) /* ('/') '0' */ 
-    goto accept0_11;
+    goto accept22_11;
 if(current < 0x3A) /* ('9') ':' */ 
-    goto state0_15;
-goto accept0_11;
+    goto state22_15;
+goto accept22_11;
 
 
-accept0_0:
+accept22_0:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); pNext = pEnd; goto incaseString; 
-accept0_1:
+accept22_1:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); pNext = pEnd; goto caseString; 
-accept0_2:
+accept22_2:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Bar, null); 
-accept0_3:
+accept22_3:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.ParBegin, null); 
-accept0_4:
+accept22_4:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.ParEnd, null); 
-accept0_5:
+accept22_5:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Plus, null); 
-accept0_6:
+accept22_6:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Question, null); 
-accept0_7:
+accept22_7:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Star, null); 
-accept0_8:
+accept22_8:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Except, null); 
-accept0_9:
+accept22_9:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); pNext = pEnd; goto range; 
-accept0_10:
+accept22_10:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); pNext = pEnd; goto skip; 
-accept0_11:
+accept22_11:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Accept, new RegExNodeAccept(null, ushort.Parse(new string(pStart+1, 0, ((int)(pEnd-pStart))-1)))); 
-accept0_12:
+accept22_12:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Name, new RegExNodeName(new string(pStart, 0, (int)(pEnd-pStart)))); 
-nonaccept0:
+nonaccept22:
  throw new Exception("Syntax error."); }
                 }
 
@@ -357,30 +357,30 @@ nonaccept0:
  * '\' -> 3
  * [']'-0xFFFF] -> 1
  */
-if(pNext >= pLimit) goto nonaccept1;
+if(pNext >= pLimit) goto nonaccept23;
 var current = *pNext++;
 if(current < 0x28) /* (''') '(' */  {
     if(current < 0x27) /* ('&') ''' */ 
-        goto state1_1;
-    goto state1_2;
+        goto state23_1;
+    goto state23_2;
 }
 if(current < 0x5C) /* ('[') '\' */ 
-    goto state1_1;
+    goto state23_1;
 if(current < 0x5D) /* ('\') ']' */ 
-    goto state1_3;
-goto state1_1;
+    goto state23_3;
+goto state23_1;
 /*
  * DFA STATE 1 (accepts to 5)
  */
-state1_1:
+state23_1:
 pEnd = pNext;
-goto accept1_5;
+goto accept23_5;
 /*
  * DFA STATE 2 (accepts to 0)
  */
-state1_2:
+state23_2:
 pEnd = pNext;
-goto accept1_0;
+goto accept23_0;
 /*
  * DFA STATE 3 (accepts to 5)
  * [0x00-'m'] -> 4
@@ -391,70 +391,70 @@ goto accept1_0;
  * 't' -> 7
  * ['u'-0xFFFF] -> 4
  */
-state1_3:
+state23_3:
 pEnd = pNext;
-if(pNext >= pLimit) goto accept1_5;
+if(pNext >= pLimit) goto accept23_5;
 current = *pNext++;
 if(current < 0x72) /* ('q') 'r' */  {
     if(current < 0x6E) /* ('m') 'n' */ 
-        goto state1_4;
+        goto state23_4;
     if(current < 0x6F) /* ('n') 'o' */ 
-        goto state1_5;
-    goto state1_4;
+        goto state23_5;
+    goto state23_4;
 }
 if(current < 0x74) /* ('s') 't' */  {
     if(current < 0x73) /* ('r') 's' */ 
-        goto state1_6;
-    goto state1_4;
+        goto state23_6;
+    goto state23_4;
 }
 if(current < 0x75) /* ('t') 'u' */ 
-    goto state1_7;
-goto state1_4;
+    goto state23_7;
+goto state23_4;
 /*
  * DFA STATE 4 (accepts to 4)
  */
-state1_4:
+state23_4:
 pEnd = pNext;
-goto accept1_4;
+goto accept23_4;
 /*
  * DFA STATE 5 (accepts to 2)
  */
-state1_5:
+state23_5:
 pEnd = pNext;
-goto accept1_2;
+goto accept23_2;
 /*
  * DFA STATE 6 (accepts to 3)
  */
-state1_6:
+state23_6:
 pEnd = pNext;
-goto accept1_3;
+goto accept23_3;
 /*
  * DFA STATE 7 (accepts to 1)
  */
-state1_7:
+state23_7:
 pEnd = pNext;
-goto accept1_1;
+goto accept23_1;
 
 
-accept1_0:
+accept23_0:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Phrase, new RegExNodeSequence(sb.ToString(), RegExCasing.Insensitive)); 
-accept1_1:
+accept23_1:
  pNext = pEnd;
  sb.Append((char)9); _position = (int)(pEnd-ptr); goto nextIncaseChar;  
-accept1_2:
+accept23_2:
  pNext = pEnd;
  sb.Append((char)10); _position = (int)(pEnd-ptr); goto nextIncaseChar; 
-accept1_3:
+accept23_3:
  pNext = pEnd;
  sb.Append((char)13); _position = (int)(pEnd-ptr); goto nextIncaseChar; 
-accept1_4:
+accept23_4:
  pNext = pEnd;
  sb.Append(pStart[1]); _position = (int)(pEnd-ptr); goto nextIncaseChar; 
-accept1_5:
+accept23_5:
  pNext = pEnd;
  sb.Append(pStart[0]); _position = (int)(pEnd-ptr); goto nextIncaseChar; 
-nonaccept1:
+nonaccept23:
  throw new Exception("Syntax error."); }
                 }
                 caseString:
@@ -496,30 +496,30 @@ nonaccept1:
  * '\' -> 3
  * [']'-0xFFFF] -> 1
  */
-if(pNext >= pLimit) goto nonaccept2;
+if(pNext >= pLimit) goto nonaccept24;
 var current = *pNext++;
 if(current < 0x23) /* ('"') '#' */  {
     if(current < 0x22) /* ('!') '"' */ 
-        goto state2_1;
-    goto state2_2;
+        goto state24_1;
+    goto state24_2;
 }
 if(current < 0x5C) /* ('[') '\' */ 
-    goto state2_1;
+    goto state24_1;
 if(current < 0x5D) /* ('\') ']' */ 
-    goto state2_3;
-goto state2_1;
+    goto state24_3;
+goto state24_1;
 /*
  * DFA STATE 1 (accepts to 5)
  */
-state2_1:
+state24_1:
 pEnd = pNext;
-goto accept2_5;
+goto accept24_5;
 /*
  * DFA STATE 2 (accepts to 0)
  */
-state2_2:
+state24_2:
 pEnd = pNext;
-goto accept2_0;
+goto accept24_0;
 /*
  * DFA STATE 3 (accepts to 5)
  * [0x00-'m'] -> 4
@@ -530,70 +530,70 @@ goto accept2_0;
  * 't' -> 7
  * ['u'-0xFFFF] -> 4
  */
-state2_3:
+state24_3:
 pEnd = pNext;
-if(pNext >= pLimit) goto accept2_5;
+if(pNext >= pLimit) goto accept24_5;
 current = *pNext++;
 if(current < 0x72) /* ('q') 'r' */  {
     if(current < 0x6E) /* ('m') 'n' */ 
-        goto state2_4;
+        goto state24_4;
     if(current < 0x6F) /* ('n') 'o' */ 
-        goto state2_5;
-    goto state2_4;
+        goto state24_5;
+    goto state24_4;
 }
 if(current < 0x74) /* ('s') 't' */  {
     if(current < 0x73) /* ('r') 's' */ 
-        goto state2_6;
-    goto state2_4;
+        goto state24_6;
+    goto state24_4;
 }
 if(current < 0x75) /* ('t') 'u' */ 
-    goto state2_7;
-goto state2_4;
+    goto state24_7;
+goto state24_4;
 /*
  * DFA STATE 4 (accepts to 4)
  */
-state2_4:
+state24_4:
 pEnd = pNext;
-goto accept2_4;
+goto accept24_4;
 /*
  * DFA STATE 5 (accepts to 2)
  */
-state2_5:
+state24_5:
 pEnd = pNext;
-goto accept2_2;
+goto accept24_2;
 /*
  * DFA STATE 6 (accepts to 3)
  */
-state2_6:
+state24_6:
 pEnd = pNext;
-goto accept2_3;
+goto accept24_3;
 /*
  * DFA STATE 7 (accepts to 1)
  */
-state2_7:
+state24_7:
 pEnd = pNext;
-goto accept2_1;
+goto accept24_1;
 
 
-accept2_0:
+accept24_0:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Phrase, new RegExNodeSequence(sb.ToString(), RegExCasing.Sensitive)); 
-accept2_1:
+accept24_1:
  pNext = pEnd;
  sb.Append((char)9); _position = (int)(pEnd-ptr); goto nextCaseChar;  
-accept2_2:
+accept24_2:
  pNext = pEnd;
  sb.Append((char)10); _position = (int)(pEnd-ptr); goto nextCaseChar; 
-accept2_3:
+accept24_3:
  pNext = pEnd;
  sb.Append((char)13); _position = (int)(pEnd-ptr); goto nextCaseChar; 
-accept2_4:
+accept24_4:
  pNext = pEnd;
  sb.Append(pStart[1]); _position = (int)(pEnd-ptr); goto nextCaseChar; 
-accept2_5:
+accept24_5:
  pNext = pEnd;
  sb.Append(pStart[0]); _position = (int)(pEnd-ptr); goto nextCaseChar; 
-nonaccept2:
+nonaccept24:
  throw new Exception("Syntax error."); }
                 }
                 range:
@@ -610,24 +610,24 @@ nonaccept2:
  *  |  +-Ranges(']')
  *  +-Accept(1)
  *  |  +-Concat
- *  |     +-Ranges([0x00-0xFFFF])
- *  |     +-Sequence(CaseInsensitive,'-')
- *  |     +-Ranges([0x00-0xFFFF])
+ *  |     +-Ranges('\')
+ *  |     +-Ranges('t')
  *  +-Accept(2)
  *  |  +-Concat
  *  |     +-Ranges('\')
- *  |     +-Ranges('t')
+ *  |     +-Ranges('n')
  *  +-Accept(3)
  *  |  +-Concat
  *  |     +-Ranges('\')
- *  |     +-Ranges('n')
+ *  |     +-Ranges('r')
  *  +-Accept(4)
  *  |  +-Concat
  *  |     +-Ranges('\')
- *  |     +-Ranges('r')
+ *  |     +-Ranges([0x00-0xFFFF])
  *  +-Accept(5)
  *  |  +-Concat
- *  |     +-Ranges('\')
+ *  |     +-Ranges([0x00-0xFFFF])
+ *  |     +-Sequence(CaseInsensitive,'-')
  *  |     +-Ranges([0x00-0xFFFF])
  *  +-Accept(6)
  *  |  +-Ranges('.')
@@ -643,46 +643,46 @@ nonaccept2:
  * ']' -> 4
  * ['^'-0xFFFF] -> 1
  */
-if(pNext >= pLimit) goto nonaccept3;
+if(pNext >= pLimit) goto nonaccept25;
 var current = *pNext++;
 if(current < 0x5C) /* ('[') '\' */  {
     if(current < 0x2E) /* ('-') '.' */ 
-        goto state3_1;
+        goto state25_1;
     if(current < 0x2F) /* ('.') '/' */ 
-        goto state3_2;
-    goto state3_1;
+        goto state25_2;
+    goto state25_1;
 }
 if(current < 0x5D) /* ('\') ']' */ 
-    goto state3_3;
+    goto state25_3;
 if(current < 0x5E) /* (']') '^' */ 
-    goto state3_4;
-goto state3_1;
+    goto state25_4;
+goto state25_1;
 /*
  * DFA STATE 1 (accepts to 7)
  * '-' -> 5
  */
-state3_1:
+state25_1:
 pEnd = pNext;
-if(pNext >= pLimit) goto accept3_7;
+if(pNext >= pLimit) goto accept25_7;
 current = *pNext++;
 if(current < 0x2D) /* (',') '-' */ 
-    goto accept3_7;
+    goto accept25_7;
 if(current < 0x2E) /* ('-') '.' */ 
-    goto state3_5;
-goto accept3_7;
+    goto state25_5;
+goto accept25_7;
 /*
  * DFA STATE 2 (accepts to 6)
  * '-' -> 6
  */
-state3_2:
+state25_2:
 pEnd = pNext;
-if(pNext >= pLimit) goto accept3_6;
+if(pNext >= pLimit) goto accept25_6;
 current = *pNext++;
 if(current < 0x2D) /* (',') '-' */ 
-    goto accept3_6;
+    goto accept25_6;
 if(current < 0x2E) /* ('-') '.' */ 
-    goto state3_6;
-goto accept3_6;
+    goto state25_6;
+goto accept25_6;
 /*
  * DFA STATE 3 (accepts to 7)
  * [0x00-','] -> 7
@@ -695,118 +695,115 @@ goto accept3_6;
  * 't' -> 11
  * ['u'-0xFFFF] -> 7
  */
-state3_3:
+state25_3:
 pEnd = pNext;
-if(pNext >= pLimit) goto accept3_7;
+if(pNext >= pLimit) goto accept25_7;
 current = *pNext++;
 if(current < 0x6F) /* ('n') 'o' */  {
     if(current < 0x2E) /* ('-') '.' */  {
         if(current < 0x2D) /* (',') '-' */ 
-            goto state3_7;
-        goto state3_8;
+            goto state25_7;
+        goto state25_8;
     }
     if(current < 0x6E) /* ('m') 'n' */ 
-        goto state3_7;
-    goto state3_9;
+        goto state25_7;
+    goto state25_9;
 }
 if(current < 0x73) /* ('r') 's' */  {
     if(current < 0x72) /* ('q') 'r' */ 
-        goto state3_7;
-    goto state3_10;
+        goto state25_7;
+    goto state25_10;
 }
 if(current < 0x74) /* ('s') 't' */ 
-    goto state3_7;
+    goto state25_7;
 if(current < 0x75) /* ('t') 'u' */ 
-    goto state3_11;
-goto state3_7;
+    goto state25_11;
+goto state25_7;
 /*
  * DFA STATE 4 (accepts to 0)
  */
-state3_4:
+state25_4:
 pEnd = pNext;
-goto accept3_0;
+goto accept25_0;
 /*
  * DFA STATE 5
  * [0x00-0xFFFF] -> 12
  */
-state3_5:
-if(pNext >= pLimit) goto accept3_7;
+state25_5:
+if(pNext >= pLimit) goto accept25_7;
 current = *pNext++;
-goto state3_12;
+goto state25_12;
 /*
  * DFA STATE 6
  * [0x00-0xFFFF] -> 12
  */
-state3_6:
-if(pNext >= pLimit) goto accept3_6;
+state25_6:
+if(pNext >= pLimit) goto accept25_6;
 current = *pNext++;
-goto state3_12;
+goto state25_12;
 /*
- * DFA STATE 7 (accepts to 5)
+ * DFA STATE 7 (accepts to 4)
  */
-state3_7:
+state25_7:
 pEnd = pNext;
-goto accept3_5;
+goto accept25_4;
 /*
- * DFA STATE 8 (accepts to 5)
- * [0x00-0xFFFF] -> 12
+ * DFA STATE 8 (accepts to 4)
  */
-state3_8:
+state25_8:
 pEnd = pNext;
-if(pNext >= pLimit) goto accept3_5;
-current = *pNext++;
-goto state3_12;
+goto accept25_4;
 /*
- * DFA STATE 9 (accepts to 3)
+ * DFA STATE 9 (accepts to 2)
  */
-state3_9:
+state25_9:
 pEnd = pNext;
-goto accept3_3;
+goto accept25_2;
 /*
- * DFA STATE 10 (accepts to 4)
+ * DFA STATE 10 (accepts to 3)
  */
-state3_10:
+state25_10:
 pEnd = pNext;
-goto accept3_4;
+goto accept25_3;
 /*
- * DFA STATE 11 (accepts to 2)
+ * DFA STATE 11 (accepts to 1)
  */
-state3_11:
+state25_11:
 pEnd = pNext;
-goto accept3_2;
+goto accept25_1;
 /*
- * DFA STATE 12 (accepts to 1)
+ * DFA STATE 12 (accepts to 5)
  */
-state3_12:
+state25_12:
 pEnd = pNext;
-goto accept3_1;
+goto accept25_5;
 
 
-accept3_0:
+accept25_0:
  pNext = pEnd;
  _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Range, new RegExNodeRanges(ranges)); 
-accept3_1:
- pNext = pEnd;
- ranges.Add(new RegExInputRange(pStart[0], pStart[2])); _position = (int)(pEnd-ptr); goto nextRangeChar;  
-accept3_2:
+accept25_1:
  pNext = pEnd;
  ranges.Add(new RegExInputRange((char)9)); _position = (int)(pEnd-ptr); goto nextRangeChar;  
-accept3_3:
+accept25_2:
  pNext = pEnd;
  ranges.Add(new RegExInputRange((char)10)); _position = (int)(pEnd-ptr); goto nextRangeChar;  
-accept3_4:
+accept25_3:
  pNext = pEnd;
  ranges.Add(new RegExInputRange((char)13)); _position = (int)(pEnd-ptr); goto nextRangeChar;  
-accept3_5:
+accept25_4:
  pNext = pEnd;
  ranges.Add(new RegExInputRange(pStart[1])); _position = (int)(pEnd-ptr); goto nextRangeChar; 
-accept3_6:
+accept25_5:
+ pNext = pEnd;
+ ranges.Add(new RegExInputRange(pStart[0], pStart[2])); _position = (int)(pEnd-ptr); goto nextRangeChar;  
+accept25_6:
  pNext = pEnd;
  ranges.Add(new RegExInputRange()); _position = (int)(pEnd-ptr); goto nextRangeChar; 
-accept3_7:
+accept25_7:
  pNext = pEnd;
  ranges.Add(new RegExInputRange(pStart[0])); _position = (int)(pEnd-ptr); goto nextRangeChar;  
-nonaccept3:
+nonaccept25:
  throw new Exception("Syntax error."); }
                 }
             }

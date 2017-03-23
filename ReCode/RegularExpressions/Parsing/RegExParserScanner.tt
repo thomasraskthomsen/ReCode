@@ -89,14 +89,15 @@ namespace ReCode.RegularExpressions.Parsing
                     <#
                     foreach(var token in ReCode.RegularExpressionTokens(WriteLine)) {
                         if(token.Matches(@"[\]]"))                             { #> _position = (int)(pEnd-ptr); return new KeyValuePair<Token, RegExNode>(Token.Range, new RegExNodeRanges(ranges)); <# }
-                        // making ranges
-                        if(token.Matches("[.] '-' [.]"))                       { #> ranges.Add(new RegExInputRange(pStart[0], pStart[2])); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
                         if(token.Matches(@"[\\][t]"))                          { #> ranges.Add(new RegExInputRange((char)9)); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
                         if(token.Matches(@"[\\][n]"))                          { #> ranges.Add(new RegExInputRange((char)10)); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
                         if(token.Matches(@"[\\][r]"))                          { #> ranges.Add(new RegExInputRange((char)13)); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
-
                         // when someone write \x we match the letter x
                         if(token.Matches(@"[\\][.]"))                          { #> ranges.Add(new RegExInputRange(pStart[1])); _position = (int)(pEnd-ptr); goto nextRangeChar; <# }
+        
+                        // making ranges
+                        if(token.Matches("[.] '-' [.]"))                       { #> ranges.Add(new RegExInputRange(pStart[0], pStart[2])); _position = (int)(pEnd-ptr); goto nextRangeChar;  <# }
+
                         // when someone write . we match any letter
                         if(token.Matches(@"[\.]"))                             { #> ranges.Add(new RegExInputRange()); _position = (int)(pEnd-ptr); goto nextRangeChar; <# }
                         // just copy any other letter into the pattern
