@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using ReCode.Parsers.Generation;
 using ReCode.Parsers.Grammatics;
 using ReCode.Parsers.RunTime;
@@ -253,18 +254,101 @@ namespace ReCodeTest
 
         }
 
+        static void TestParser()
+        {
+            while (true)
+            {
+                Console.Write('>');
+                var line = Console.ReadLine();
+                if (string.IsNullOrEmpty(line)) break;
+                try
+                {
+                    var parser = new RegExParser(line);
+                    var tree = parser.Parse();
+                    var sb = new StringBuilder();
+                    tree.Print(sb, string.Empty, string.Empty);
+                    Console.WriteLine(sb);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+        }
+
+        static void TestPrecedence()
+        {
+            var g = Grammar.FromTokens("EXP", "SET", "Set", "Except");
+            var g1 = g.WithPrecedenceGroup();
+            g1.Matches("EXP", "Set");
+            var g2 = g.WithPrecedenceGroup();
+            g2.MatchesLeft("EXP", "EXP", "EXP");
+            var g3 = g.WithPrecedenceGroup();
+            g3.MatchesRight("EXP", "EXP", "Except", "EXP");
+
+            var gen = new ParserGenerator(g);
+            var tab = gen.GenerateParserTable();
+            Console.Write("\t");
+            foreach (var s in g.Tokens)
+            {
+                var tok = s.Length > 7 ? s.Substring(0, 7) : s;
+                Console.Write($"{tok}\t");
+            }
+            Console.WriteLine();
+
+            for(var i=0;i<tab.Length;i++)
+            {
+                var row = tab[i];
+                Console.Write($"#{i}:\t");
+                for(var j=0;j<row.Length;j++)
+                {
+                    var col = row[j];
+                    if (col == null)
+                    {
+                        Console.Write("\t");
+                        continue;
+                    }
+                    var action = col.Action.ToString().Substring(0, 2);
+                    Console.Write($"{action}-{col.Target}\t");
+                }
+                Console.WriteLine();
+            }
+
+            var parser = new RunTimeParser<string>(tab, new RunTimeParser<string>.RuntimeParserAction[]
+            {
+                arguments => arguments.Array[arguments.Offset],
+                arguments => arguments.Array[arguments.Offset],
+                arguments => $"({arguments.Array[arguments.Offset]} + {arguments.Array[arguments.Offset+1]})",
+                arguments => $"({arguments.Array[arguments.Offset]} \\ {arguments.Array[arguments.Offset+2]})",
+            });
+            parser.SetInput(new []
+            {
+                new KeyValuePair<int, string>(4, "A"),
+                new KeyValuePair<int, string>(4, "B"),
+                new KeyValuePair<int, string>(5, "\\"),
+                new KeyValuePair<int, string>(4, "C"),
+                new KeyValuePair<int, string>(5, "\\"),
+                new KeyValuePair<int, string>(4, "D"),
+                new KeyValuePair<int, string>(1, "END"),
+            });
+            var res = parser.Parse();
+            Console.WriteLine(res);
+        }
+
         static void Main(string[] args)
         {
             //TestGenerationSample();
             //TestGeneration();
             //TestGenerationAmbiguous();
             //TestReGenerator();
-            TestRe();
+            //TestRe();
             //TestLr();
             //TestRegExParser2Scanner();
             //TestRegExParser2();
             //BugTest();
             //TestRe3();
+            TestParser();
+            //TestPrecedence();
         }
     }
 }
