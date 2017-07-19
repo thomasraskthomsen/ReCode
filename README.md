@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Inspired by **re2c**, this library can be referenced from a T4 text template for the purpose of generating
+Inspired by **RE2C**, this library can be referenced from a T4 text template for the purpose of generating
 code for parallel matching of a block of regular expressions.
 
 Supported inputs for matching are pointers to a sequence of bytes or chars. This enables generation of fast scanners/tokenizers for almost any
@@ -15,7 +15,7 @@ purpose (even binary data).
 
 **ReCode** is enabled in a text template by referencing the dll:
 ```c#
-<#@ assembly name="$(SolutionDir)packages\\ReCode-1.0.1\\lib\\452\\ReCode.dll" #>
+<#@ assembly name="$(SolutionDir)packages\\ReCode.1.0.3\\lib\\452\\ReCode.dll" #>
 <#@ import namespace="ReCode" #>
 ```
 
@@ -25,7 +25,7 @@ As an example of a compiled block of expressions, consider the following example
 
 ```c#
 <#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ assembly name="$(SolutionDir)packages\\ReCode-1.0.1\\lib\\452\\ReCode.dll" #>
+<#@ assembly name="$(SolutionDir)packages\\ReCode.1.0.3\\lib\\452\\ReCode.dll" #>
 <#@ import namespace="ReCode" #>
 <#@ output extension=".cs" #>
 using System.Collections.Generic;
@@ -715,7 +715,7 @@ We can consider the source code used in **ReCode** for parsing regular expressio
 
 ```C#
 <#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ assembly name="$(SolutionDir)ReCode\\bin\\Release\\ReCode.dll" #>
+<#@ assembly name="$(SolutionDir)packages\\ReCode.1.0.3\\lib\\452\\ReCode.dll" #>
 <#@ import namespace="ReCode" #>
 <#@ output extension=".cs" #>
 using System;
