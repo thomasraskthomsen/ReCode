@@ -42,7 +42,7 @@ namespace ReCode.Parsers.Grammatics
         public bool MatchesLeft(int left, params int[] right)
         {
             var id = _grammar.NewProductionId();
-            var production = new Production(_grammar, id, null, LrDerivation.Left, left, right);
+            var production = new Production(_grammar, id, _precedence, LrDerivation.Left, left, right);
             _grammar._productions.Add(production);
             return false;
         }
@@ -50,7 +50,7 @@ namespace ReCode.Parsers.Grammatics
         public bool MatchesRight(int left, params int[] right)
         {
             var id = _grammar.NewProductionId();
-            var production = new Production(_grammar, id, null, LrDerivation.Right, left, right);
+            var production = new Production(_grammar, id, _precedence, LrDerivation.Right, left, right);
             _grammar._productions.Add(production);
             return false;
         }
