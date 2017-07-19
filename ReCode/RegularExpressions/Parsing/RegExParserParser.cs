@@ -293,21 +293,9 @@ __state_5:
 
 __state_6:
   switch((int)currentToken.Key){
-  case 1: case 10: case 13:
+  case 1: case 3: case 4: case 8: case 10: case 12:
   /* do reduce using production 5 */
   goto __action_5;
-  case 3:
-  /* perform shift to state 2 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(2); goto __state_2;
-  case 4:
-  /* perform shift to state 3 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(3); goto __state_3;
   case 5:
   /* perform shift to state 7 */
   _valueStack.Push(currentToken.Value);
@@ -326,24 +314,18 @@ __state_6:
   _stateStack.Push((int)currentToken.Key);
   currentToken = NextToken();
   _stateStack.Push(9); goto __state_9;
-  case 8:
-  /* perform shift to state 4 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(4); goto __state_4;
   case 11:
   /* perform shift to state 11 */
   _valueStack.Push(currentToken.Value);
   _stateStack.Push((int)currentToken.Key);
   currentToken = NextToken();
   _stateStack.Push(11); goto __state_11;
-  case 12:
-  /* perform shift to state 5 */
+  case 13:
+  /* perform shift to state 12 */
   _valueStack.Push(currentToken.Value);
   _stateStack.Push((int)currentToken.Key);
   currentToken = NextToken();
-  _stateStack.Push(5); goto __state_5;
+  _stateStack.Push(12); goto __state_12;
   default:
     goto __syntaxError;
   }
@@ -575,21 +557,9 @@ __state_17:
 
 __state_18:
   switch((int)currentToken.Key){
-  case 1: case 10: case 13:
+  case 1: case 3: case 4: case 8: case 10: case 12:
   /* do reduce using production 6 */
   goto __action_6;
-  case 3:
-  /* perform shift to state 2 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(2); goto __state_2;
-  case 4:
-  /* perform shift to state 3 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(3); goto __state_3;
   case 5:
   /* perform shift to state 7 */
   _valueStack.Push(currentToken.Value);
@@ -608,87 +578,27 @@ __state_18:
   _stateStack.Push((int)currentToken.Key);
   currentToken = NextToken();
   _stateStack.Push(9); goto __state_9;
-  case 8:
-  /* perform shift to state 4 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(4); goto __state_4;
   case 11:
   /* perform shift to state 11 */
   _valueStack.Push(currentToken.Value);
   _stateStack.Push((int)currentToken.Key);
   currentToken = NextToken();
   _stateStack.Push(11); goto __state_11;
-  case 12:
-  /* perform shift to state 5 */
+  case 13:
+  /* perform shift to state 12 */
   _valueStack.Push(currentToken.Value);
   _stateStack.Push((int)currentToken.Key);
   currentToken = NextToken();
-  _stateStack.Push(5); goto __state_5;
+  _stateStack.Push(12); goto __state_12;
   default:
     goto __syntaxError;
   }
 
 __state_19:
   switch((int)currentToken.Key){
-  case 1:
+  case 1: case 3: case 4: case 5: case 6: case 7: case 8: case 10: case 11: case 12:
   /* do reduce using production 11 */
   goto __action_11;
-  case 3:
-  /* perform shift to state 2 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(2); goto __state_2;
-  case 4:
-  /* perform shift to state 3 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(3); goto __state_3;
-  case 5:
-  /* perform shift to state 7 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(7); goto __state_7;
-  case 6:
-  /* perform shift to state 8 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(8); goto __state_8;
-  case 7:
-  /* perform shift to state 9 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(9); goto __state_9;
-  case 8:
-  /* perform shift to state 4 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(4); goto __state_4;
-  case 10:
-  /* perform shift to state 10 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(10); goto __state_10;
-  case 11:
-  /* perform shift to state 11 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(11); goto __state_11;
-  case 12:
-  /* perform shift to state 5 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(5); goto __state_5;
   case 13:
   /* perform shift to state 12 */
   _valueStack.Push(currentToken.Value);
@@ -701,18 +611,9 @@ __state_19:
 
 __state_20:
   switch((int)currentToken.Key){
-  case 3:
-  /* perform shift to state 14 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(14); goto __state_14;
-  case 4:
-  /* perform shift to state 15 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(15); goto __state_15;
+  case 3: case 4: case 8: case 9: case 10: case 12:
+  /* do reduce using production 5 */
+  goto __action_5;
   case 5:
   /* perform shift to state 21 */
   _valueStack.Push(currentToken.Value);
@@ -731,27 +632,18 @@ __state_20:
   _stateStack.Push((int)currentToken.Key);
   currentToken = NextToken();
   _stateStack.Push(23); goto __state_23;
-  case 8:
-  /* perform shift to state 16 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(16); goto __state_16;
-  case 9: case 10: case 13:
-  /* do reduce using production 5 */
-  goto __action_5;
   case 11:
   /* perform shift to state 26 */
   _valueStack.Push(currentToken.Value);
   _stateStack.Push((int)currentToken.Key);
   currentToken = NextToken();
   _stateStack.Push(26); goto __state_26;
-  case 12:
-  /* perform shift to state 17 */
+  case 13:
+  /* perform shift to state 27 */
   _valueStack.Push(currentToken.Value);
   _stateStack.Push((int)currentToken.Key);
   currentToken = NextToken();
-  _stateStack.Push(17); goto __state_17;
+  _stateStack.Push(27); goto __state_27;
   default:
     goto __syntaxError;
   }
@@ -935,18 +827,9 @@ __state_28:
 
 __state_29:
   switch((int)currentToken.Key){
-  case 3:
-  /* perform shift to state 14 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(14); goto __state_14;
-  case 4:
-  /* perform shift to state 15 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(15); goto __state_15;
+  case 3: case 4: case 8: case 9: case 10: case 12:
+  /* do reduce using production 6 */
+  goto __action_6;
   case 5:
   /* perform shift to state 21 */
   _valueStack.Push(currentToken.Value);
@@ -965,90 +848,27 @@ __state_29:
   _stateStack.Push((int)currentToken.Key);
   currentToken = NextToken();
   _stateStack.Push(23); goto __state_23;
-  case 8:
-  /* perform shift to state 16 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(16); goto __state_16;
-  case 9: case 10: case 13:
-  /* do reduce using production 6 */
-  goto __action_6;
   case 11:
   /* perform shift to state 26 */
   _valueStack.Push(currentToken.Value);
   _stateStack.Push((int)currentToken.Key);
   currentToken = NextToken();
   _stateStack.Push(26); goto __state_26;
-  case 12:
-  /* perform shift to state 17 */
+  case 13:
+  /* perform shift to state 27 */
   _valueStack.Push(currentToken.Value);
   _stateStack.Push((int)currentToken.Key);
   currentToken = NextToken();
-  _stateStack.Push(17); goto __state_17;
+  _stateStack.Push(27); goto __state_27;
   default:
     goto __syntaxError;
   }
 
 __state_30:
   switch((int)currentToken.Key){
-  case 3:
-  /* perform shift to state 14 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(14); goto __state_14;
-  case 4:
-  /* perform shift to state 15 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(15); goto __state_15;
-  case 5:
-  /* perform shift to state 21 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(21); goto __state_21;
-  case 6:
-  /* perform shift to state 22 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(22); goto __state_22;
-  case 7:
-  /* perform shift to state 23 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(23); goto __state_23;
-  case 8:
-  /* perform shift to state 16 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(16); goto __state_16;
-  case 9:
+  case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11: case 12:
   /* do reduce using production 11 */
   goto __action_11;
-  case 10:
-  /* perform shift to state 25 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(25); goto __state_25;
-  case 11:
-  /* perform shift to state 26 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(26); goto __state_26;
-  case 12:
-  /* perform shift to state 17 */
-  _valueStack.Push(currentToken.Value);
-  _stateStack.Push((int)currentToken.Key);
-  currentToken = NextToken();
-  _stateStack.Push(17); goto __state_17;
   case 13:
   /* perform shift to state 27 */
   _valueStack.Push(currentToken.Value);
