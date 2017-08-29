@@ -7,27 +7,28 @@ namespace ReCode.RegularExpressions.NfaEvaluation
     public class RegExNfaEvaluationNode
     {
         private readonly NfaState[] _states;
+        private int _numMembers;
         private readonly bool[] _memberFlags;
-        private readonly List<int> _members;
+        private readonly int[] _members;
          
         public RegExNfaEvaluationNode(NfaState[] states)
         {
             _states = states;
             _memberFlags = new bool[_states.Length];
-            _members = new List<int>(_states.Length);
+            _members = new int[_states.Length];
         }
 
         public void Reset()
         {
-            foreach (var idx in _members)
-                _memberFlags[idx] = false;
-            _members.Clear();
+            for (var i = 0; i < _numMembers; i++)
+                _memberFlags[_members[i]] = false;
+            _numMembers = 0;
         }
 
         private bool Add(int id)
         {
             if (_memberFlags[id]) return false;
-            _members.Add(id);
+            _members[_numMembers++] = id;
             _memberFlags[id] = true;
             return true;
         }
@@ -42,12 +43,14 @@ namespace ReCode.RegularExpressions.NfaEvaluation
 
         public IEnumerable<NfaState> NfaStates
         {
-            get {
-                return _members.Select(idx => _states[idx]);
+            get
+            {
+                for (var i = 0; i < _numMembers; i++)
+                    yield return _states[_members[i]];
             }
         }
 
-        public bool IsEmpty => _members.Count == 0;
+        public bool IsEmpty => _numMembers == 0;
 
         public ushort? GetBestAcceptState() {
             ushort? best = null;

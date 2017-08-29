@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ReCode.RegularExpressions.Transform;
 
@@ -18,12 +19,8 @@ namespace ReCode.RegularExpressions.NfaEvaluation
             foreach (var nfa in current.NfaStates)
             {
                 foreach (var range in nfa.Map)
-                {
-                    if (range.Key.Min > c)
-                        break; // no more relevant values
-                    if (c <= range.Key.Max)
+                    if(range.Key.Min <= c && c <=range.Key.Max)
                         spare.Apply(range.Value); // c is contained in  [Key.Min;Key.Max]
-                }
             }
             var tmp = current;
             current = spare;
@@ -31,15 +28,22 @@ namespace ReCode.RegularExpressions.NfaEvaluation
             spare.Reset();
         }
 
-        public unsafe KeyValuePair<ushort, int>? Match(string str)
+        public RegExNfaEvaluationNode[] GetNodes()
+        {
+            return new RegExNfaEvaluationNode[] { new RegExNfaEvaluationNode(_states), new RegExNfaEvaluationNode(_states) };
+        }
+
+        public unsafe KeyValuePair<ushort, int>? Match(string str, RegExNfaEvaluationNode[] nodes)
         {
             ushort? bestAccept = null;
             int bestIndex = 0;
 
             fixed (char* letters = str)
             {
-                var current = new RegExNfaEvaluationNode(_states);
-                var spare = new RegExNfaEvaluationNode(_states);
+                var current = nodes[0];
+                var spare = nodes[1];
+                current.Reset();
+                spare.Reset();
 
                 current.Apply(_states[0]);
 
