@@ -12,7 +12,7 @@ namespace ReCode.RegularExpressions.Transform
         /// <summary>
         /// The overlapping list of NFA transitions from this state to another including epsilon transitions.
         /// </summary>
-        public readonly List<KeyValuePair<RegExInputRange, NfaState>> Map = new List<KeyValuePair<RegExInputRange, NfaState>>(); 
+        public readonly List<KeyValuePair<RegExInputRange, NfaState>> Map = new List<KeyValuePair<RegExInputRange, NfaState>>(1); 
         /// <summary>
         /// The set of NFA states that can be reached from this state using zero or more epsilon transitions.
         /// </summary>
@@ -48,6 +48,11 @@ namespace ReCode.RegularExpressions.Transform
         int IComparable<NfaState>.CompareTo(NfaState other)
         {
             return NfaId.CompareTo(other.NfaId);
+        }
+
+        public override int GetHashCode()
+        {
+            return NfaId;
         }
     }
 }

@@ -62,6 +62,8 @@
     <Compile Include="RegularExpressions\Code\ReCodeGenerator.cs" />
     <Compile Include="RegularExpressions\Evaluation\RegExEvaluationNode.cs" />
     <Compile Include="RegularExpressions\Evaluation\RegExEvaluator.cs" />
+    <Compile Include="RegularExpressions\NfaEvaluation\RegExNfaEvaluationNode.cs" />
+    <Compile Include="RegularExpressions\NfaEvaluation\RegExNfaEvaluator.cs" />
     <Compile Include="RegularExpressions\Parsing\Nodes\RegExCasing.cs" />
     <Compile Include="RegularExpressions\Parsing\Nodes\RegExNode.cs" />
     <Compile Include="RegularExpressions\Parsing\Nodes\RegExNodeAccept.cs" />

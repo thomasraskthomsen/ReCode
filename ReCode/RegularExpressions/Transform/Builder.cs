@@ -38,12 +38,11 @@ namespace ReCode.RegularExpressions.Transform
         }
 
         /// <summary>
-        /// Builds a DFA from the specified expression tree.
+        /// Builds an NFA from the specified expression tree.
         /// </summary>
         /// <param name="root">The expresion tree to transform into a DFA.</param>
         /// <param name="defaultAcceptState">A default accept state can be specified. For instance in case the pression does not have one.</param>
-        /// <returns></returns>
-        public RegExEvaluationNode Build(RegExNode root, ushort? defaultAcceptState = null)
+        public NfaState BuildNfa(RegExNode root, ushort? defaultAcceptState = null)
         {
             _root = root;
             // first build NFA
@@ -68,6 +67,19 @@ namespace ReCode.RegularExpressions.Transform
             // add to each NFA state the closure for epsilon moves
             CalculateEpsilonState();
             CalcuateBestReachableAcceptStates();
+
+            return start;
+        }
+
+        /// <summary>
+        /// Builds a DFA from the specified expression tree.
+        /// </summary>
+        /// <param name="root">The expresion tree to transform into a DFA.</param>
+        /// <param name="defaultAcceptState">A default accept state can be specified. For instance in case the pression does not have one.</param>
+        /// <returns></returns>
+        public RegExEvaluationNode Build(RegExNode root, ushort? defaultAcceptState = null)
+        {
+            var start = BuildNfa(root, defaultAcceptState);
 
             // transform NFA to DFA, starting 'start' and what can be reached from there via epsilon steps.
             var initial = new HashSet<NfaState> { start };

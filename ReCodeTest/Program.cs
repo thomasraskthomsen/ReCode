@@ -2,11 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security.Principal;
 using System.Text;
 using ReCode.Parsers.Generation;
 using ReCode.Parsers.Grammatics;
 using ReCode.Parsers.RunTime;
+using ReCode.RegularExpressions.NfaEvaluation;
 using ReCode.RegularExpressions.Parsing.Nodes;
+using ReCode.RegularExpressions.Transform;
 
 namespace ReCodeTest
 {
@@ -335,6 +338,52 @@ namespace ReCodeTest
             Console.WriteLine(res);
         }
 
+        private static void TestRuntimeNfa()
+        {
+            const int iNum = 2;
+            const int jNum = 500;
+
+            RegExNode rootNode = null;
+            var lastRuleNumber = ushort.MaxValue;
+            var wildcard = new RegExNodeRepeat(new RegExNodeRanges(new RegExInputRange()), RegExRepeatType.ZeroOrMore);
+            for (var i = 0; i < iNum; i++)
+            {
+                var si = new RegExNodeSequence(i.ToString("X") + "/");
+                for (var j = 0; j < jNum; j++)
+                {
+                    var sj = new RegExNodeSequence(j.ToString("X") + "¤");
+                    var node = new RegExNodeAccept(new RegExNodeConcat(si, new RegExNodeConcat(wildcard, sj)), --lastRuleNumber);
+                    if (rootNode == null)
+                        rootNode = node;
+                    else
+                        rootNode = RegExNodeUnion.Of(rootNode, node);
+                }
+            }
+            var sw = Stopwatch.StartNew();
+            var builder = new Builder();
+            var nfaRoot = builder.BuildNfa(rootNode);
+            var eval = new RegExNfaEvaluator(nfaRoot);
+            Console.WriteLine("Processor prepared in {0} ms", sw.Elapsed.TotalMilliseconds);
+
+            sw.Restart();
+            var lastMatchedRuleNumber = ushort.MaxValue;
+            for (var i = 0; i < iNum; i++)
+            {
+                for (var j = 0; j < jNum; j++)
+                {
+                    var pattern = $"{i:X}/0000/testing{j:X}¤";
+                    var match = eval.Match(pattern);
+                    var expected = --lastMatchedRuleNumber;
+                    if(match.Value.Key != expected)
+                        throw new Exception("Incorrectly matched sequence");
+                }
+            }
+
+            const int numSteps = iNum*jNum;
+            var iterationMs = sw.Elapsed.TotalMilliseconds/numSteps;
+            Console.WriteLine("Processing time {0} ms/item", iterationMs);
+        }
+
         static void Main(string[] args)
         {
             //TestGenerationSample();
@@ -347,8 +396,9 @@ namespace ReCodeTest
             //TestRegExParser2();
             //BugTest();
             //TestRe3();
-            TestParser();
+            //TestParser();
             //TestPrecedence();
+            TestRuntimeNfa();
         }
     }
 }
