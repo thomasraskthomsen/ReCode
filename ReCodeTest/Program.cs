@@ -342,7 +342,7 @@ namespace ReCodeTest
         private static void TestRuntimeNfa()
         {
             const int iNum = 2;
-            const int jNum = 500;
+            const int jNum = 100;
 
             RegExNode rootNode = null;
             var lastRuleNumber = ushort.MaxValue;
@@ -352,7 +352,7 @@ namespace ReCodeTest
                 var si = new RegExNodeSequence($"{i:X}/");
                 for (var j = 0; j < jNum; j++)
                 {
-                    var sj = new RegExNodeSequence($"{j:X}¤");
+                    var sj = new RegExNodeSequence($"{3*j:X}¤");
                     var node = new RegExNodeAccept(new RegExNodeConcat(si, new RegExNodeConcat(wildcard, sj)), --lastRuleNumber);
                     if (rootNode == null)
                         rootNode = node;
@@ -374,7 +374,7 @@ namespace ReCodeTest
                 {
                     for (var j = 0; j < jNum; j++)
                     {
-                        var pattern = $"{i:X}/0000/testing{j:X}¤";
+                        var pattern = $"{i:X}/0000/testing{3*j:X}¤";
                         var match = eval.Match(pattern, nodes);
                         var expected = --lastMatchedRuleNumber;
                         if (match.Value.Key != expected)
@@ -399,7 +399,7 @@ namespace ReCodeTest
                 {
                     for (var j = 0; j < jNum; j++)
                     {
-                        var pattern = $"{i:X}/0000/testing{j:X}¤";
+                        var pattern = $"{i:X}/0000/testing{3*j:X}¤";
                         var match = eval.Match(pattern);
                         var expected = --lastMatchedRuleNumber;
                         if (match.Value.Key != expected)

@@ -5,6 +5,7 @@ using System.Linq;
 using ReCode.RegularExpressions.Code;
 using ReCode.RegularExpressions.Evaluation;
 using ReCode.RegularExpressions.Parsing.Nodes;
+using ReCode.RegularExpressions.Util;
 
 namespace ReCode.RegularExpressions.Transform
 {
@@ -18,7 +19,8 @@ namespace ReCode.RegularExpressions.Transform
         private RegExNode _root;
         private readonly List<NfaState> _nfaStates = new List<NfaState>();
         private readonly List<DfaState> _dfaStates = new List<DfaState>();
-        private readonly Dictionary<string, DfaState> _knownDfaStates = new Dictionary<string, DfaState>();
+        private readonly Dictionary<ulong,List<DfaState>> _knownDfaStates = new Dictionary<ulong, List<DfaState>>(); 
+        //private readonly Dictionary<string, DfaState> _knownDfaStates = new Dictionary<string, DfaState>();
         private readonly Queue<DfaState> _pendingStates = new Queue<DfaState>();
 
         private NfaState NewNfaState(ushort? acceptState = null)
@@ -29,9 +31,9 @@ namespace ReCode.RegularExpressions.Transform
             return res;
         }
 
-        private DfaState NewDfaState(ushort? smallestAcceptState, ICollection<NfaState> nfaStates, string id)
+        private DfaState NewDfaState(ushort? smallestAcceptState, ICollection<NfaState> nfaStates)
         {
-            var res = new DfaState(smallestAcceptState, nfaStates, id, _nextDfaStateNumber);
+            var res = new DfaState(smallestAcceptState, nfaStates, _nextDfaStateNumber);
             ++_nextDfaStateNumber;
             _dfaStates.Add(res);
             return res;
@@ -79,15 +81,37 @@ namespace ReCode.RegularExpressions.Transform
         /// <returns></returns>
         public RegExEvaluationNode Build(RegExNode root, ushort? defaultAcceptState = null)
         {
-            var start = BuildNfa(root, defaultAcceptState)[0];
+            _root = root;
+            // first build NFA
+            var start = NewNfaState();
+            var end = NewNfaState(defaultAcceptState);
+            Apply(root, start, end);
+#if DIAGNOSTICS
+            Console.WriteLine("Created {0} new states.", _nextNfaStateNumber);
+            for (var i = 0; i < _nfaStates.Count; i++)
+            {
+                var state = _nfaStates[i];
+                Console.Write("{0,3}:\t", i);
+                foreach (var pair in state.Map)
+                {
+                    var str = $"{pair.Key}->N{pair.Value.NfaId}";
+                    Console.Write("{0,-15}", str);
+                }
+                Console.WriteLine();
+            }
+#endif
+
+            // add to each NFA state the closure for epsilon moves
+            CalculateEpsilonState();
+            CalcuateBestReachableAcceptStates();
 
             // transform NFA to DFA, starting 'start' and what can be reached from there via epsilon steps.
             var initial = new HashSet<NfaState> { start };
             initial.UnionWith(start.EpsilonStates);
             var acceptState = GetSmallestAcceptState(null, initial);
-            var stateId = DfaState.GetDfaName(acceptState, initial);
-            var dfaBegin = NewDfaState(acceptState, initial, stateId);
-            _knownDfaStates.Add(stateId, dfaBegin);
+            var stateId = DfaState.GetDfaId(acceptState, initial);
+            var dfaBegin = NewDfaState(acceptState, initial);
+            AddKnownState(stateId, dfaBegin);
             _pendingStates.Enqueue(dfaBegin);
             while (_pendingStates.Count > 0)
             {
@@ -95,6 +119,34 @@ namespace ReCode.RegularExpressions.Transform
                 ProcessDfaState(state);
             }
             return _dfaStates[0].EvaluationNode;
+        }
+
+        private void AddKnownState(ulong hash, DfaState state)
+        {
+            List<DfaState> hashList;
+            if (!_knownDfaStates.TryGetValue(hash, out hashList))
+            {
+                hashList = new List<DfaState>(1);
+                _knownDfaStates.Add(hash, hashList);
+            }
+            hashList.Add(state);
+        }
+
+        private bool TryGetKnownState(ulong hash, ICollection<NfaState> nfaStates, out DfaState knownState)
+        {
+            knownState = null;
+            List<DfaState> hashList;
+            if (!_knownDfaStates.TryGetValue(hash, out hashList))
+                return false;
+            foreach (var state in hashList)
+            {
+                if (state.NfaStates.SetEquals(nfaStates))
+                {
+                    knownState = state;
+                    return true;
+                }
+            }
+            return false;
         }
 
         private bool IsAcceptStateImprovement(ushort? from, ushort? to)
@@ -169,13 +221,13 @@ namespace ReCode.RegularExpressions.Transform
             foreach (var pair in state.GetGroupedTransition())
             {
                 var nextAcceptState = GetSmallestAcceptState(state.SmallestAcceptState, pair.Value);
-                var name = DfaState.GetDfaName(nextAcceptState, pair.Value);
+                var dfaId = DfaState.GetDfaId(nextAcceptState, pair.Value);
                 DfaState dfa;
-                if (!_knownDfaStates.TryGetValue(name, out dfa))
+                if(!TryGetKnownState(dfaId, pair.Value, out dfa))
                 {
-                    dfa = NewDfaState(nextAcceptState, pair.Value, name);
+                    dfa = NewDfaState(nextAcceptState, pair.Value);
                     _pendingStates.Enqueue(dfa);
-                    _knownDfaStates.Add(name, dfa);
+                    AddKnownState(dfaId, dfa);
                 }
                 state.EvaluationNode.Add(pair.Key, dfa.EvaluationNode);
 #if DIAGNOSTICS

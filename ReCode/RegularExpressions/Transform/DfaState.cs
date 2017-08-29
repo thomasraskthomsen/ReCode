@@ -6,39 +6,48 @@ using ReCode.RegularExpressions.Util;
 
 namespace ReCode.RegularExpressions.Transform
 {
+
     /// <summary>
     /// Class that represents a node in the DFA graph
     /// </summary>
     public class DfaState
     {
+        private struct FastHash
+        {
+            public ulong Hash;
+
+            public void Apply(ulong value)
+            {
+                var key = Hash;
+                key += value;
+                key = (~key) + (key << 21); // key = (key << 21) - key - 1;
+                key ^= (key >> 24);
+                key += (key << 3) + (key << 8); // key * 265
+                key ^= (key >> 14);
+                key += (key << 2) + (key << 4); // key * 21
+                key ^= (key >> 28);
+                key += (key << 31);
+                Hash = key;
+            }
+        }
+
         /// <summary>
         /// Calculates the id string for a state represented by the supplied underlying NDA noces.
         /// </summary>
         /// <param name="states">The collection of underlying NDA states.</param>
         /// <param name="acceptState">The largest processed accept state so far.</param>
         /// <returns>The id</returns>
-        public static string GetDfaName(ushort? acceptState, ICollection<NfaState> states)
+        public static ulong GetDfaId(ushort? acceptState, ICollection<NfaState> states)
         {
-            // just append the numbers into a string.
-            var sb = new StringBuilder();
-            var isFirst = true;
+            var hasher = new FastHash();
             foreach (var s in states)
-            {
-                if (isFirst)
-                    isFirst = false;
-                else
-                    sb.Append(',');
-                sb.Append(s.NfaId);
-            }
-            sb.Append(';');
-            sb.Append(acceptState?.ToString() ?? "X");
-            return sb.ToString();
+                hasher.Apply((ulong)s.NfaId);
+            hasher.Apply(0);
+            if(acceptState.HasValue)
+                hasher.Apply(acceptState.Value);
+            return hasher.Hash;
         }
 
-        /// <summary>
-        /// The name of this state (created using <see cref="GetDfaName"/>). 
-        /// </summary>
-        public readonly string Name;
         /// <summary>
         /// The id of this state.
         /// </summary>
@@ -64,9 +73,8 @@ namespace ReCode.RegularExpressions.Transform
         /// <summary>
         /// Creates an instance of a DFA state object from the specified parameters.
         /// </summary>
-        public DfaState(ushort? smallestAcceptState, ICollection<NfaState> nfaStates, string name, int dfaId)
+        public DfaState(ushort? smallestAcceptState, ICollection<NfaState> nfaStates, int dfaId)
         {
-            Name = name;
             DfaId = dfaId;
             SmallestAcceptState = smallestAcceptState;
             NfaStates = new HashSet<NfaState>(nfaStates);
