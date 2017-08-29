@@ -42,7 +42,7 @@ namespace ReCode.RegularExpressions.Transform
         /// </summary>
         /// <param name="root">The expresion tree to transform into a DFA.</param>
         /// <param name="defaultAcceptState">A default accept state can be specified. For instance in case the pression does not have one.</param>
-        public NfaState BuildNfa(RegExNode root, ushort? defaultAcceptState = null)
+        public IReadOnlyList<NfaState> BuildNfa(RegExNode root, ushort? defaultAcceptState = null)
         {
             _root = root;
             // first build NFA
@@ -68,7 +68,7 @@ namespace ReCode.RegularExpressions.Transform
             CalculateEpsilonState();
             CalcuateBestReachableAcceptStates();
 
-            return start;
+            return _nfaStates;
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace ReCode.RegularExpressions.Transform
         /// <returns></returns>
         public RegExEvaluationNode Build(RegExNode root, ushort? defaultAcceptState = null)
         {
-            var start = BuildNfa(root, defaultAcceptState);
+            var start = BuildNfa(root, defaultAcceptState)[0];
 
             // transform NFA to DFA, starting 'start' and what can be reached from there via epsilon steps.
             var initial = new HashSet<NfaState> { start };

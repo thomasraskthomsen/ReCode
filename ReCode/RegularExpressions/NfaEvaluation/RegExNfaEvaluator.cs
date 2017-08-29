@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ReCode.RegularExpressions.Transform;
 
 namespace ReCode.RegularExpressions.NfaEvaluation
 {
     public class RegExNfaEvaluator
     {
-        private readonly NfaState _rootState;
+        private readonly NfaState[] _states;
 
-        public RegExNfaEvaluator(NfaState rootState)
+        public RegExNfaEvaluator(IReadOnlyList<NfaState> states)
         {
-            _rootState = rootState;
+            _states = states.ToArray();
         }
-
 
         private static void Map(char c, ref RegExNfaEvaluationNode current, ref RegExNfaEvaluationNode spare)
         {
@@ -38,10 +38,10 @@ namespace ReCode.RegularExpressions.NfaEvaluation
 
             fixed (char* letters = str)
             {
-                var current = new RegExNfaEvaluationNode();
-                var spare = new RegExNfaEvaluationNode();
+                var current = new RegExNfaEvaluationNode(_states);
+                var spare = new RegExNfaEvaluationNode(_states);
 
-                current.Apply(_rootState);
+                current.Apply(_states[0]);
 
                 var len = str.Length;
                 for (var i = 0; i < len; i++)
