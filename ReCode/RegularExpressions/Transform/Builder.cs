@@ -68,7 +68,6 @@ namespace ReCode.RegularExpressions.Transform
 
             // add to each NFA state the closure for epsilon moves
             CalculateEpsilonState();
-            CalcuateBestReachableAcceptStates();
 
             return _nfaStates;
         }

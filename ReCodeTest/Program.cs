@@ -342,17 +342,18 @@ namespace ReCodeTest
         private static void TestRuntimeNfa()
         {
             const int iNum = 2;
-            const int jNum = 100;
+            const int jNum = 500;
+            const int scaling = 1;
 
             RegExNode rootNode = null;
             var lastRuleNumber = ushort.MaxValue;
             var wildcard = new RegExNodeRepeat(new RegExNodeRanges(new RegExInputRange()), RegExRepeatType.ZeroOrMore);
             for (var i = 0; i < iNum; i++)
             {
-                var si = new RegExNodeSequence($"{i:X}/");
+                var si = new RegExNodeSequence($"{scaling * i:X}/");
                 for (var j = 0; j < jNum; j++)
                 {
-                    var sj = new RegExNodeSequence($"{3*j:X}¤");
+                    var sj = new RegExNodeSequence($"{scaling * j:X}¤");
                     var node = new RegExNodeAccept(new RegExNodeConcat(si, new RegExNodeConcat(wildcard, sj)), --lastRuleNumber);
                     if (rootNode == null)
                         rootNode = node;
@@ -374,7 +375,7 @@ namespace ReCodeTest
                 {
                     for (var j = 0; j < jNum; j++)
                     {
-                        var pattern = $"{i:X}/0000/testing{3*j:X}¤";
+                        var pattern = $"{scaling * i:X}/0000/testing{scaling * j:X}¤";
                         var match = eval.Match(pattern, nodes);
                         var expected = --lastMatchedRuleNumber;
                         if (match.Value.Key != expected)
@@ -386,7 +387,7 @@ namespace ReCodeTest
                 var iterationMs = sw.Elapsed.TotalMilliseconds/numSteps;
                 Console.WriteLine("NFA Processing time {0} ms/item", iterationMs);
             }
-            {
+            if(false){
                 var sw = Stopwatch.StartNew();
                 var builder = new Builder();
                 var dfaRoot = builder.Build(rootNode);
@@ -399,7 +400,7 @@ namespace ReCodeTest
                 {
                     for (var j = 0; j < jNum; j++)
                     {
-                        var pattern = $"{i:X}/0000/testing{3*j:X}¤";
+                        var pattern = $"{scaling * i:X}/0000/testing{scaling * j:X}¤";
                         var match = eval.Match(pattern);
                         var expected = --lastMatchedRuleNumber;
                         if (match.Value.Key != expected)
