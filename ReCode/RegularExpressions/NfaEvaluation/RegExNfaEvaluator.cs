@@ -16,12 +16,7 @@ namespace ReCode.RegularExpressions.NfaEvaluation
 
         private static void Map(char c, ref RegExNfaEvaluationNode current, ref RegExNfaEvaluationNode spare)
         {
-            foreach (var nfa in current.NfaStates)
-            {
-                foreach (var range in nfa.Map)
-                    if(range.Key.Min <= c && c <=range.Key.Max)
-                        spare.Apply(range.Value); // c is contained in  [Key.Min;Key.Max]
-            }
+            current.MapTo(c, spare);
             var tmp = current;
             current = spare;
             spare = tmp;
@@ -53,7 +48,7 @@ namespace ReCode.RegularExpressions.NfaEvaluation
                     var c = letters[i];
                     Map(c, ref current, ref spare);
                     if (current.IsEmpty) break;
-                    var best = current.GetBestAcceptState();
+                    var best = current.BestAcceptState;
                     if (best.HasValue)
                     {
                         if (bestAccept < best.Value)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using ReCode.RegularExpressions.Transform;
 
@@ -10,6 +11,7 @@ namespace ReCode.RegularExpressions.NfaEvaluation
         private int _numMembers;
         private readonly bool[] _memberFlags;
         private readonly int[] _members;
+        private ushort? _bestAcceptState;
          
         public RegExNfaEvaluationNode(NfaState[] states)
         {
@@ -23,22 +25,47 @@ namespace ReCode.RegularExpressions.NfaEvaluation
             for (var i = 0; i < _numMembers; i++)
                 _memberFlags[_members[i]] = false;
             _numMembers = 0;
+            _bestAcceptState = null;
         }
 
-        private bool Add(int id)
+        private bool Add(NfaState state)
         {
+            var id = state.NfaId;
             if (_memberFlags[id]) return false;
             _members[_numMembers++] = id;
             _memberFlags[id] = true;
+            if (state.AcceptState.HasValue)
+            {
+                var proposal = state.AcceptState.Value;
+                if (!_bestAcceptState.HasValue || (proposal < _bestAcceptState.Value))
+                    _bestAcceptState = proposal;
+            }
             return true;
         }
 
         public void Apply(NfaState state)
         {
-            var id = state.NfaId;
-            if (!Add(id)) return;
-            foreach (var eps in state.EpsilonStates)
-                Add(eps.NfaId);
+            if (!Add(state)) return;
+            var epsilonStates = state.EpsilonStates;
+            var cnt = epsilonStates.Length;
+            for(var i=0;i<cnt;i++)
+                Add(epsilonStates[i]);
+        }
+
+        public void MapTo(char c, RegExNfaEvaluationNode target)
+        {
+            for (var i = 0; i < _numMembers; i++)
+            {
+                var nfa = _states[_members[i]];
+                var nfaMap = nfa.Map;
+                var cnt = nfaMap.Count;
+                for (var j = 0; j < cnt; j++)
+                {
+                    var range = nfaMap[j];
+                    if (range.Key.Min <= c && c <= range.Key.Max)
+                        target.Apply(range.Value); // c is contained in  [Key.Min;Key.Max]
+                }
+            }
         }
 
         public IEnumerable<NfaState> NfaStates
@@ -52,18 +79,7 @@ namespace ReCode.RegularExpressions.NfaEvaluation
 
         public bool IsEmpty => _numMembers == 0;
 
-        public ushort? GetBestAcceptState() {
-            ushort? best = null;
-            foreach (var state in NfaStates)
-            {
-                if (state.AcceptState.HasValue)
-                {
-                    if (best < state.AcceptState.Value)
-                        continue;
-                    best = state.AcceptState;
-                }
-            }
-            return best;
-        }
+        public ushort? BestAcceptState => _bestAcceptState;
+
     }
 }

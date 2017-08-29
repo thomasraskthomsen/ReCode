@@ -304,10 +304,13 @@ namespace ReCode.RegularExpressions.Transform
 
         private void CalculateEpsilonState()
         {
+            var epsilonStates = new SortedSet<NfaState>();
             foreach (var state in _nfaStates)
             {
-                state.EpsilonStates.Add(state);
-                GetEpsilonMoves(state.EpsilonStates, state);
+                epsilonStates.Clear();
+                epsilonStates.Add(state);
+                GetEpsilonMoves(epsilonStates, state);
+                state.EpsilonStates = epsilonStates.ToArray();
             }
         }
 

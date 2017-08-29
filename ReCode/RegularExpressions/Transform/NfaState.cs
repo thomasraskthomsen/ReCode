@@ -12,11 +12,13 @@ namespace ReCode.RegularExpressions.Transform
         /// <summary>
         /// The overlapping list of NFA transitions from this state to another including epsilon transitions.
         /// </summary>
-        public readonly List<KeyValuePair<RegExInputRange, NfaState>> Map = new List<KeyValuePair<RegExInputRange, NfaState>>(1); 
+        public readonly List<KeyValuePair<RegExInputRange, NfaState>> Map = new List<KeyValuePair<RegExInputRange, NfaState>>(1);
+
         /// <summary>
         /// The set of NFA states that can be reached from this state using zero or more epsilon transitions.
         /// </summary>
-        public readonly SortedSet<NfaState> EpsilonStates = new SortedSet<NfaState>(); 
+        public NfaState[] EpsilonStates;
+        //public readonly SortedSet<NfaState> EpsilonStates = new SortedSet<NfaState>(); 
 
         /// <summary>
         /// The NFA node id.

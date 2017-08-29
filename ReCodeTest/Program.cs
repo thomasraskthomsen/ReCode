@@ -341,8 +341,8 @@ namespace ReCodeTest
 
         private static void TestRuntimeNfa()
         {
-            const int iNum = 20;
-            const int jNum = 300;
+            const int iNum = 2;
+            const int jNum = 500;
 
             RegExNode rootNode = null;
             var lastRuleNumber = ushort.MaxValue;
@@ -386,7 +386,7 @@ namespace ReCodeTest
                 var iterationMs = sw.Elapsed.TotalMilliseconds/numSteps;
                 Console.WriteLine("NFA Processing time {0} ms/item", iterationMs);
             }
-            if(false) {
+            {
                 var sw = Stopwatch.StartNew();
                 var builder = new Builder();
                 var dfaRoot = builder.Build(rootNode);
