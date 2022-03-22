@@ -1,5 +1,5 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ assembly name="$(SolutionDir)ReCode\\Bin\\Debug\\ReCode.dll" #>
+<#@ assembly name="$(SolutionDir)ReCode\\Lib\\ReCode.dll" #>
 <#@ import namespace="ReCode" #>
 <#@ output extension=".cs" #>
 using System;

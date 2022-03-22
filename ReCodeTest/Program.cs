@@ -425,10 +425,10 @@ namespace ReCodeTest
             //TestRegExParser2Scanner();
             //TestRegExParser2();
             //BugTest();
-            //TestRe3();
+            TestRe3();
             //TestParser();
             //TestPrecedence();
-            TestRuntimeNfa();
+            //TestRuntimeNfa();
         }
     }
 }

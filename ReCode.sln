@@ -1,16 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReCode", "ReCode\ReCode.csproj", "{8B925EAA-5FD2-4978-B45D-8D5D47E036A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReCode", "ReCode\ReCode.csproj", "{8B925EAA-5FD2-4978-B45D-8D5D47E036A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReCodeTest", "ReCodeTest\ReCodeTest.csproj", "{690B856A-5F88-4F38-8A10-33DCD477E343}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{59EAA9D3-854C-43F3-81FF-EFFC50C31DF2}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
-		ReCode\ReCode.nuspec = ReCode\ReCode.nuspec
 	EndProjectSection
 EndProject
 Global
@@ -30,5 +29,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1EB7E101-271A-4B8A-AFD9-BEF3CBA59497}
 	EndGlobalSection
 EndGlobal
